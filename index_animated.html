@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pemilihan Ketua dan Wakil Ketua OSIS</title>
+    <link rel="stylesheet" href="style_animated.css">
+</head>
+<body>
+    <div id="loginScreen" class="login-screen">
+
+    <div class="login-card">
+
+        <div class="login-logo">
+            OS
+        </div>
+
+        <span class="login-label">
+            SISTEM PEMILIHAN
+        </span>
+
+        <h2>
+            Login Voting
+        </h2>
+
+        <p>
+            Masukkan akses untuk membuka sistem pemilihan.
+        </p>
+
+
+        <div class="login-input-group">
+
+            <label>
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="loginUsername"
+                placeholder="Masukkan username"
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <div class="login-input-group">
+
+            <label>
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Masukkan password"
+            >
+
+        </div>
+
+
+        <p
+            id="loginError"
+            class="login-error"
+        ></p>
+
+
+        <button
+            id="loginButton"
+            class="login-button"
+            onclick="loginVoting()"
+        >
+            Masuk
+        </button>
+
+    </div>
+
+</div>
+    <header class="header page-enter page-enter-1">
+        <div>
+            <h1>Pemilihan Ketua dan Wakil Ketua OSIS</h1>
+            <p>OSIS SMP Bodhi Dharma</p>
+        </div>
+
+        <a href="grafik.html" class="result-btn">Lihat Hasil</a>
+    </header>
+
+    <main class="container">
+        <section class="hero page-enter page-enter-2">
+            <span class="badge">PEMILIHAN OSIS 2026</span>
+            <h2>Pilih Pasangan Calonmu</h2>
+            <p>Klik seluruh bagian kartu untuk memilih pasangan calon.</p>
+        </section>
+
+        <section class="candidate-grid page-enter page-enter-3">
+
+            <article
+                class="candidate-card"
+                onclick="vote(1)"
+                onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); vote(1); }"
+                role="button"
+                tabindex="0"
+                aria-label="Pilih Paslon 1"
+            >
+                <div class="candidate-number">01</div>
+
+                <img
+                    src="foto/paslon1.jpg"
+                    alt="Paslon 1"
+                    class="candidate-photo"
+                >
+
+                <div class="candidate-content">
+                    <h3>Paslon 1</h3>
+                    <p class="candidate-name">Nama Ketua &amp; Nama Wakil</p>
+                    <p class="vision">"Visi dan misi pasangan calon 1"</p>
+                    <div class="select-text">Klik untuk memilih</div>
+                </div>
+            </article>
+
+            <article
+                class="candidate-card"
+                onclick="vote(2)"
+                onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); vote(2); }"
+                role="button"
+                tabindex="0"
+                aria-label="Pilih Paslon 2"
+            >
+                <div class="candidate-number">02</div>
+
+                <img
+                    src="foto/paslon2.jpg"
+                    alt="Paslon 2"
+                    class="candidate-photo"
+                >
+
+                <div class="candidate-content">
+                    <h3>Paslon 2</h3>
+                    <p class="candidate-name">Nama Ketua &amp; Nama Wakil</p>
+                    <p class="vision">"Visi dan misi pasangan calon 2"</p>
+                    <div class="select-text">Klik untuk memilih</div>
+                </div>
+            </article>
+
+            <article
+                class="candidate-card"
+                onclick="vote(3)"
+                onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); vote(3); }"
+                role="button"
+                tabindex="0"
+                aria-label="Pilih Paslon 3"
+            >
+                <div class="candidate-number">03</div>
+
+                <img
+                    src="foto/paslon3.jpg"
+                    alt="Paslon 3"
+                    class="candidate-photo"
+                >
+
+                <div class="candidate-content">
+                    <h3>Paslon 3</h3>
+                    <p class="candidate-name">Nama Ketua &amp; Nama Wakil</p>
+                    <p class="vision">"Visi dan misi pasangan calon 3"</p>
+                    <div class="select-text">Klik untuk memilih</div>
+                </div>
+            </article>
+
+            <article
+                class="candidate-card"
+                onclick="vote(4)"
+                onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); vote(4); }"
+                role="button"
+                tabindex="0"
+                aria-label="Pilih Paslon 4"
+            >
+                <div class="candidate-number">04</div>
+
+                <img
+                    src="foto/paslon4.jpg"
+                    alt="Paslon 4"
+                    class="candidate-photo"
+                >
+
+                <div class="candidate-content">
+                    <h3>Paslon 4</h3>
+                    <p class="candidate-name">Nama Ketua &amp; Nama Wakil</p>
+                    <p class="vision">"Visi dan misi pasangan calon 4"</p>
+                    <div class="select-text">Klik untuk memilih</div>
+                </div>
+            </article>
+
+        </section>
+    </main>
+
+    <!-- KONFIRMASI PILIHAN -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-box confirm-box">
+            <div class="confirm-icon">?</div>
+            <span class="modal-label">KONFIRMASI PILIHAN</span>
+            <h2 id="confirmTitle">Pilih Paslon 1?</h2>
+            <p>Pastikan pilihanmu sudah benar sebelum suara dikirim.</p>
+
+            <div class="confirm-actions">
+                <button type="button" class="cancel-btn" onclick="cancelCandidateVote()">Batal</button>
+                <button type="button" class="confirm-btn" onclick="confirmCandidateVote()">Ya, Pilih</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- COUNTDOWN -->
+    <div id="countdownModal" class="modal countdown-modal">
+        <div class="countdown-box">
+            <span class="countdown-label">SUARA AKAN DIKIRIM</span>
+            <div id="countdownNumber" class="countdown-number">3</div>
+            <p id="countdownCandidate">Paslon 1</p>
+
+            <div class="countdown-track">
+                <div id="countdownProgress" class="countdown-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BERHASIL -->
+    <div id="successModal" class="modal">
+        <div class="modal-box success-box">
+            <div class="success-icon">✓</div>
+            <span class="modal-label">VOTING SELESAI</span>
+            <h2>Suara Berhasil Dikirim</h2>
+            <p>Terima kasih sudah menggunakan hak pilihmu.</p>
+            <button type="button" class="done-btn" onclick="closeModal()">Selesai</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+
+    <script>
+        let pendingPaslon = null;
+        let countdownTimer = null;
+
+        const originalVote = window.vote;
+
+        window.vote = function (paslon) {
+            if (document.body.classList.contains("vote-processing")) return;
+
+            pendingPaslon = paslon;
+            document.getElementById("confirmTitle").textContent = `Pilih Paslon ${paslon}?`;
+            document.getElementById("confirmModal").classList.add("show");
+            document.body.classList.add("modal-open");
+        };
+
+        function cancelCandidateVote() {
+            pendingPaslon = null;
+            document.getElementById("confirmModal").classList.remove("show");
+            document.body.classList.remove("modal-open");
+        }
+
+        function confirmCandidateVote() {
+            if (!pendingPaslon || typeof originalVote !== "function") return;
+
+            const selectedPaslon = pendingPaslon;
+
+            document.getElementById("confirmModal").classList.remove("show");
+            document.getElementById("countdownCandidate").textContent = `Paslon ${selectedPaslon}`;
+
+            document.body.classList.add("modal-open", "vote-processing");
+            startVoteCountdown(selectedPaslon);
+        }
+
+        function startVoteCountdown(paslon) {
+            const modal = document.getElementById("countdownModal");
+            const number = document.getElementById("countdownNumber");
+            const progress = document.getElementById("countdownProgress");
+
+            let count = 3;
+
+            modal.classList.add("show");
+            number.textContent = count;
+            restartCountdownAnimation(number);
+
+            progress.classList.remove("run");
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => progress.classList.add("run"));
+            });
+
+            clearInterval(countdownTimer);
+
+            countdownTimer = setInterval(() => {
+                count--;
+
+                if (count > 0) {
+                    number.textContent = count;
+                    restartCountdownAnimation(number);
+                    return;
+                }
+
+                clearInterval(countdownTimer);
+
+                number.textContent = "✓";
+                number.classList.add("countdown-finish");
+
+                setTimeout(() => {
+                    modal.classList.remove("show");
+
+                    const nativeConfirm = window.confirm;
+                    window.confirm = () => true;
+
+                    try {
+                        originalVote(paslon);
+                    } finally {
+                        window.confirm = nativeConfirm;
+                    }
+
+                    pendingPaslon = null;
+
+                    setTimeout(() => {
+                        number.classList.remove("countdown-finish");
+                        document.body.classList.remove("modal-open", "vote-processing");
+                    }, 500);
+
+                }, 450);
+
+            }, 800);
+        }
+
+        function restartCountdownAnimation(element) {
+            element.classList.remove("countdown-pop");
+            void element.offsetWidth;
+            element.classList.add("countdown-pop");
+        }
+
+        const originalCloseModal = window.closeModal;
+
+        window.closeModal = function () {
+            const modal = document.getElementById("successModal");
+            modal.classList.add("closing");
+
+            setTimeout(() => {
+                if (typeof originalCloseModal === "function") {
+                    originalCloseModal();
+                } else {
+                    modal.classList.remove("show");
+                }
+
+                modal.classList.remove("closing");
+                document.body.classList.remove("modal-open", "vote-processing");
+            }, 260);
+        };
+    </script>
+</body>
+</html>
