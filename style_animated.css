@@ -1192,3 +1192,26 @@ body.modal-open {
     cursor: wait;
 
 }
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.header-logo {
+    width: 58px;
+    height: 58px;
+
+    object-fit: contain;
+
+    flex-shrink: 0;
+}
+
+.header-title h1 {
+    margin: 0;
+}
+
+.header-title p {
+    margin: 5px 0 0;
+}
