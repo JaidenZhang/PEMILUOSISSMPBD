@@ -4,110 +4,960 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pemilihan Ketua dan Wakil Ketua OSIS</title>
-    <link rel="stylesheet" href="style_animated.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --blue: #315f8c;
+            --blue-dark: #234b72;
+            --blue-soft: #eef5fb;
+
+            --text: #172333;
+            --muted: #6c7784;
+
+            --border: #e7edf3;
+            --white: #ffffff;
+            --background: #f7f9fb;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* =========================
+           LOGIN
+        ========================= */
+
+        .login-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 24px;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    rgba(49, 95, 140, 0.08),
+                    transparent 40%
+                ),
+                #f7f9fb;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 410px;
+
+            padding: 38px;
+
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+
+            box-shadow:
+                0 18px 50px rgba(27, 52, 78, 0.08);
+        }
+
+        .login-logo {
+            width: 55px;
+            height: 55px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 22px;
+
+            border-radius: 15px;
+
+            background: var(--blue-soft);
+            color: var(--blue);
+
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .login-label,
+        .modal-label,
+        .countdown-label {
+            display: inline-block;
+
+            margin-bottom: 10px;
+
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+        }
+
+        .login-card h2 {
+            margin-bottom: 8px;
+
+            font-size: 30px;
+            color: var(--text);
+        }
+
+        .login-card > p {
+            margin-bottom: 28px;
+
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .login-input-group {
+            margin-bottom: 18px;
+        }
+
+        .login-input-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #3c4855;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .login-input-group input {
+            width: 100%;
+
+            padding: 13px 15px;
+
+            border: 1px solid #dce4eb;
+            border-radius: 11px;
+
+            background: #fafbfd;
+
+            color: var(--text);
+            font-size: 14px;
+
+            outline: none;
+
+            transition: 0.2s ease;
+        }
+
+        .login-input-group input:focus {
+            background: #ffffff;
+            border-color: rgba(49, 95, 140, 0.5);
+
+            box-shadow:
+                0 0 0 4px rgba(49, 95, 140, 0.07);
+        }
+
+        .login-error {
+            min-height: 18px;
+            margin-bottom: 10px !important;
+
+            color: #c44b4b !important;
+            font-size: 13px !important;
+        }
+
+        .login-button {
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+            border-radius: 11px;
+
+            background: var(--blue);
+            color: #ffffff;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .login-button:hover {
+            background: var(--blue-dark);
+            transform: translateY(-1px);
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 17px 6%;
+
+            background: rgba(255, 255, 255, 0.94);
+
+            border-bottom: 1px solid var(--border);
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            backdrop-filter: blur(14px);
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .header-logo {
+            width: 48px;
+            height: 48px;
+            object-fit: contain;
+        }
+
+        .header-title h1 {
+            margin-bottom: 3px;
+
+            font-size: 17px;
+            font-weight: 750;
+
+            color: var(--text);
+        }
+
+        .header-title p {
+            color: #84909c;
+            font-size: 12px;
+        }
+
+        .result-btn {
+            padding: 10px 16px;
+
+            border: 1px solid #dce5ed;
+            border-radius: 10px;
+
+            background: #ffffff;
+
+            color: #40556a;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+
+            transition: 0.2s ease;
+        }
+
+        .result-btn:hover {
+            border-color: rgba(49, 95, 140, 0.3);
+            color: var(--blue);
+
+            background: #fafcfe;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .container {
+            width: min(1180px, 90%);
+            margin: 0 auto;
+
+            padding: 70px 0 80px;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            max-width: 700px;
+            margin-bottom: 45px;
+        }
+
+        .badge {
+            display: inline-flex;
+
+            margin-bottom: 17px;
+            padding: 7px 11px;
+
+            border: 1px solid #dce7f0;
+            border-radius: 8px;
+
+            background: #f5f8fb;
+
+            color: var(--blue);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+        }
+
+        .hero h2 {
+            margin-bottom: 12px;
+
+            color: #172333;
+
+            font-size: clamp(31px, 5vw, 48px);
+            line-height: 1.08;
+            letter-spacing: -0.035em;
+        }
+
+        .hero p {
+            color: var(--muted);
+
+            font-size: 15px;
+            line-height: 1.65;
+        }
+
+        /* =========================
+           CANDIDATE GRID
+        ========================= */
+
+        .candidate-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+
+            gap: 24px;
+        }
+
+        /* =========================
+           CARD
+        ========================= */
+
+        .candidate-card {
+            position: relative;
+            overflow: hidden;
+
+            background: #ffffff;
+
+            border: 1px solid rgba(30, 70, 110, 0.11);
+            border-radius: 22px;
+
+            box-shadow:
+                0 7px 25px rgba(24, 48, 72, 0.055);
+
+            cursor: pointer;
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                border-color 0.25s ease;
+        }
+
+        .candidate-card:hover {
+            transform: translateY(-5px);
+
+            border-color: rgba(49, 95, 140, 0.25);
+
+            box-shadow:
+                0 17px 38px rgba(24, 48, 72, 0.095);
+        }
+
+        .candidate-card:active {
+            transform: translateY(-2px) scale(0.995);
+        }
+
+        .candidate-card:focus-visible {
+            outline: 3px solid rgba(49, 95, 140, 0.18);
+            outline-offset: 4px;
+        }
+
+        /* =========================
+           FOTO
+        ========================= */
+
+        .candidate-photo {
+            width: 100%;
+            height: 320px;
+
+            display: block;
+
+            object-fit: cover;
+            object-position: center;
+
+            filter:
+                saturate(0.9)
+                contrast(0.98)
+                brightness(1.01);
+        }
+
+        /* =========================
+           NOMOR PASLON
+        ========================= */
+
+        .candidate-number {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+
+            z-index: 2;
+
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(255, 255, 255, 0.91);
+
+            border: 1px solid rgba(255, 255, 255, 0.72);
+            border-radius: 12px;
+
+            backdrop-filter: blur(10px);
+
+            color: var(--blue);
+
+            font-size: 14px;
+            font-weight: 800;
+
+            box-shadow:
+                0 5px 16px rgba(15, 35, 55, 0.09);
+        }
+
+        /* =========================
+           CARD CONTENT
+        ========================= */
+
+        .candidate-content {
+            padding: 23px 24px 25px;
+
+            background: #ffffff;
+        }
+
+        .candidate-content h3 {
+            margin-bottom: 6px;
+
+            color: #55738f;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+        }
+
+        .candidate-name {
+            margin-bottom: 15px;
+
+            color: #182431;
+
+            font-size: 22px;
+            font-weight: 750;
+
+            letter-spacing: -0.02em;
+        }
+
+        .vision {
+            min-height: 112px;
+
+            color: #68737e;
+
+            font-size: 13.5px;
+            line-height: 1.65;
+        }
+
+        .select-text {
+            margin-top: 21px;
+            padding-top: 16px;
+
+            border-top: 1px solid #edf1f4;
+
+            color: #527493;
+
+            font-size: 12px;
+            font-weight: 750;
+
+            transition: 0.2s ease;
+        }
+
+        .candidate-card:hover .select-text {
+            color: var(--blue);
+        }
+
+        /* =========================
+           MODAL
+        ========================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+
+            z-index: 5000;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+
+            background: rgba(15, 25, 35, 0.38);
+
+            backdrop-filter: blur(6px);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transition:
+                opacity 0.22s ease,
+                visibility 0.22s ease;
+        }
+
+        .modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box,
+        .countdown-box {
+            width: min(430px, 100%);
+
+            padding: 34px;
+
+            background: #ffffff;
+
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 22px;
+
+            box-shadow:
+                0 25px 70px rgba(10, 25, 40, 0.18);
+
+            transform: translateY(12px) scale(0.98);
+
+            transition: transform 0.22s ease;
+        }
+
+        .modal.show .modal-box,
+        .modal.show .countdown-box {
+            transform: translateY(0) scale(1);
+        }
+
+        .confirm-icon,
+        .success-icon {
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 20px;
+
+            border-radius: 13px;
+
+            background: #f0f5f9;
+
+            color: var(--blue);
+
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .success-icon {
+            background: #eef7f2;
+            color: #397858;
+        }
+
+        .modal-box h2 {
+            margin-bottom: 10px;
+
+            color: var(--text);
+
+            font-size: 24px;
+        }
+
+        .modal-box > p {
+            color: var(--muted);
+
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .confirm-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            gap: 10px;
+
+            margin-top: 27px;
+        }
+
+        .cancel-btn,
+        .confirm-btn,
+        .done-btn {
+            padding: 13px 17px;
+
+            border-radius: 10px;
+
+            font-size: 13px;
+            font-weight: 750;
+
+            cursor: pointer;
+
+            transition: 0.2s ease;
+        }
+
+        .cancel-btn {
+            background: #f5f7f9;
+
+            border: 1px solid #e3e8ed;
+
+            color: #58636e;
+        }
+
+        .cancel-btn:hover {
+            background: #edf1f4;
+        }
+
+        .confirm-btn,
+        .done-btn {
+            border: 1px solid var(--blue);
+
+            background: var(--blue);
+
+            color: #ffffff;
+        }
+
+        .confirm-btn:hover,
+        .done-btn:hover {
+            background: var(--blue-dark);
+        }
+
+        .done-btn {
+            width: 100%;
+
+            margin-top: 25px;
+        }
+
+        /* =========================
+           COUNTDOWN
+        ========================= */
+
+        .countdown-box {
+            text-align: center;
+        }
+
+        .countdown-number {
+            width: 105px;
+            height: 105px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin: 15px auto;
+
+            border: 1px solid #dce6ee;
+            border-radius: 50%;
+
+            background: #f7fafc;
+
+            color: var(--blue);
+
+            font-size: 47px;
+            font-weight: 800;
+        }
+
+        .countdown-box p {
+            margin-bottom: 23px;
+
+            color: #465563;
+
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .countdown-track {
+            width: 100%;
+            height: 5px;
+
+            overflow: hidden;
+
+            border-radius: 20px;
+
+            background: #edf1f4;
+        }
+
+        .countdown-progress {
+            width: 0%;
+            height: 100%;
+
+            border-radius: inherit;
+
+            background: var(--blue);
+        }
+
+        .countdown-progress.run {
+            animation: countdownProgress 2.4s linear forwards;
+        }
+
+        @keyframes countdownProgress {
+            from {
+                width: 0%;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        .countdown-pop {
+            animation: countdownPop 0.28s ease;
+        }
+
+        @keyframes countdownPop {
+            0% {
+                transform: scale(0.86);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .countdown-finish {
+            background: #eef7f2;
+            border-color: #d9ebe0;
+            color: #397858;
+        }
+
+        /* =========================
+           PAGE ANIMATION
+        ========================= */
+
+        .page-enter {
+            opacity: 0;
+            transform: translateY(12px);
+
+            animation: pageEnter 0.55s ease forwards;
+        }
+
+        .page-enter-1 {
+            animation-delay: 0.05s;
+        }
+
+        .page-enter-2 {
+            animation-delay: 0.12s;
+        }
+
+        .page-enter-3 {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes pageEnter {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+            .header {
+                padding: 14px 5%;
+            }
+
+            .header-title h1 {
+                font-size: 14px;
+            }
+
+            .header-title p {
+                font-size: 11px;
+            }
+
+            .header-logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .result-btn {
+                padding: 9px 12px;
+
+                font-size: 11px;
+            }
+
+            .container {
+                width: 91%;
+
+                padding-top: 45px;
+            }
+
+            .hero {
+                margin-bottom: 32px;
+            }
+
+            .candidate-grid {
+                grid-template-columns: 1fr;
+
+                gap: 18px;
+            }
+
+            .candidate-photo {
+                height: 290px;
+            }
+
+            .vision {
+                min-height: 0;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .header-title h1 {
+                max-width: 170px;
+            }
+
+            .hero h2 {
+                font-size: 34px;
+            }
+
+            .candidate-photo {
+                height: 260px;
+            }
+
+            .candidate-content {
+                padding: 20px;
+            }
+
+            .login-card {
+                padding: 29px 24px;
+            }
+
+            .modal-box,
+            .countdown-box {
+                padding: 27px 23px;
+            }
+        }
+    </style>
 </head>
+
 <body>
+
+    <!-- LOGIN -->
     <div id="loginScreen" class="login-screen">
 
-    <div class="login-card">
+        <div class="login-card">
 
-        <div class="login-logo">
-            OS
-        </div>
+            <div class="login-logo">
+                OS
+            </div>
 
-        <span class="login-label">
-            SISTEM PEMILIHAN
-        </span>
+            <span class="login-label">
+                SISTEM PEMILIHAN
+            </span>
 
-        <h2>
-            Login
-        </h2>
+            <h2>Login</h2>
 
-        <p>
-            Masukkan akses untuk membuka sistem pemilihan.
-        </p>
+            <p>
+                Masukkan akses untuk membuka sistem pemilihan.
+            </p>
 
+            <div class="login-input-group">
+                <label>Username</label>
 
-        <div class="login-input-group">
+                <input
+                    type="text"
+                    id="loginUsername"
+                    placeholder="Masukkan username"
+                    autocomplete="off"
+                >
+            </div>
 
-            <label>
-                Username
-            </label>
+            <div class="login-input-group">
+                <label>Password</label>
 
-            <input
-                type="text"
-                id="loginUsername"
-                placeholder="Masukkan username"
-                autocomplete="off"
+                <input
+                    type="password"
+                    id="loginPassword"
+                    placeholder="Masukkan password"
+                >
+            </div>
+
+            <p
+                id="loginError"
+                class="login-error"
+            ></p>
+
+            <button
+                id="loginButton"
+                class="login-button"
+                onclick="loginVoting()"
             >
+                Masuk
+            </button>
 
         </div>
-
-
-        <div class="login-input-group">
-
-            <label>
-                Password
-            </label>
-
-            <input
-                type="password"
-                id="loginPassword"
-                placeholder="Masukkan password"
-            >
-
-        </div>
-
-
-        <p
-            id="loginError"
-            class="login-error"
-        ></p>
-
-
-        <button
-            id="loginButton"
-            class="login-button"
-            onclick="loginVoting()"
-        >
-            Masuk
-        </button>
 
     </div>
 
-</div>
+
+    <!-- HEADER -->
     <header class="header page-enter page-enter-1">
 
-    <div class="header-brand">
+        <div class="header-brand">
 
-        <img
-            src="Logo OSIS SMPBD.png"
-            alt="Logo OSIS"
-            class="header-logo"
-        >
+            <img
+                src="Logo OSIS SMPBD.png"
+                alt="Logo OSIS"
+                class="header-logo"
+            >
 
-        <div class="header-title">
-            <h1>Pemilihan Ketua dan Wakil Ketua OSIS</h1>
-            <p>OSIS SMP Bodhi Dharma</p>
+            <div class="header-title">
+                <h1>Pemilihan Ketua dan Wakil Ketua OSIS</h1>
+                <p>OSIS SMP Bodhi Dharma</p>
+            </div>
+
         </div>
 
-    </div>
+        <a
+            href="grafik.html"
+            class="result-btn"
+        >
+            Lihat Hasil
+        </a>
 
-    <a href="grafik.html" class="result-btn">
-        Lihat Hasil
-    </a>
+    </header>
 
-</header>
 
+    <!-- MAIN -->
     <main class="container">
+
         <section class="hero page-enter page-enter-2">
-            <span class="badge">PEMILIHAN OSIS 2026</span>
-            <h2>Pilih Pasangan Calonmu</h2>
-            <p>Klik seluruh bagian kartu untuk memilih pasangan calon.</p>
+
+            <span class="badge">
+                PEMILIHAN OSIS 2026
+            </span>
+
+            <h2>
+                Pilih Pasangan Calonmu
+            </h2>
+
+            <p>
+                Klik seluruh bagian kartu untuk memilih pasangan calon.
+            </p>
+
         </section>
+
 
         <section class="candidate-grid page-enter page-enter-3">
 
+
+            <!-- PASLON 1 -->
             <article
                 class="candidate-card"
                 onclick="vote(1)"
@@ -116,7 +966,10 @@
                 tabindex="0"
                 aria-label="Pilih Paslon 1"
             >
-                <div class="candidate-number">01</div>
+
+                <div class="candidate-number">
+                    01
+                </div>
 
                 <img
                     src="foto/paslon1.png"
@@ -125,13 +978,27 @@
                 >
 
                 <div class="candidate-content">
+
                     <h3>Paslon 1</h3>
-                    <p class="candidate-name">Viola &amp; Gracya</p>
-                    <p class="vision">"Mewujudkan OSIS yang aktif, terbuka, dan dekat dengan peserta didik dengan menjadikan OSIS sebagai wadah pengembangan potensi, menyampaikan aspirasi dan kritik dan membangun lingkungan sekolah yang komunikatif, positif, dan saling menghargai"</p>
-                    <div class="select-text">Klik untuk memilih</div>
+
+                    <p class="candidate-name">
+                        Viola &amp; Gracya
+                    </p>
+
+                    <p class="vision">
+                        "Mewujudkan OSIS yang aktif, terbuka, dan dekat dengan peserta didik dengan menjadikan OSIS sebagai wadah pengembangan potensi, menyampaikan aspirasi dan kritik dan membangun lingkungan sekolah yang komunikatif, positif, dan saling menghargai"
+                    </p>
+
+                    <div class="select-text">
+                        Klik untuk memilih
+                    </div>
+
                 </div>
+
             </article>
 
+
+            <!-- PASLON 2 -->
             <article
                 class="candidate-card"
                 onclick="vote(2)"
@@ -140,7 +1007,10 @@
                 tabindex="0"
                 aria-label="Pilih Paslon 2"
             >
-                <div class="candidate-number">02</div>
+
+                <div class="candidate-number">
+                    02
+                </div>
 
                 <img
                     src="foto/paslon2.png"
@@ -149,13 +1019,27 @@
                 >
 
                 <div class="candidate-content">
+
                     <h3>Paslon 2</h3>
-                    <p class="candidate-name">Joline &amp; Darsilius</p>
-                    <p class="vision">"Mewujudkan OSIS sebagai wadah bagi seluruh siswa untuk berkembang, berkarya, menyampaikan aspirasi, serta menciptakan lingkungan sekolah yang aktif, nyaman, kompak, dan penuh semangat positif."</p>
-                    <div class="select-text">Klik untuk memilih</div>
+
+                    <p class="candidate-name">
+                        Joline &amp; Darsilius
+                    </p>
+
+                    <p class="vision">
+                        "Mewujudkan OSIS sebagai wadah bagi seluruh siswa untuk berkembang, berkarya, menyampaikan aspirasi, serta menciptakan lingkungan sekolah yang aktif, nyaman, kompak, dan penuh semangat positif."
+                    </p>
+
+                    <div class="select-text">
+                        Klik untuk memilih
+                    </div>
+
                 </div>
+
             </article>
 
+
+            <!-- PASLON 3 -->
             <article
                 class="candidate-card"
                 onclick="vote(3)"
@@ -164,7 +1048,10 @@
                 tabindex="0"
                 aria-label="Pilih Paslon 3"
             >
-                <div class="candidate-number">03</div>
+
+                <div class="candidate-number">
+                    03
+                </div>
 
                 <img
                     src="foto/paslon3.png"
@@ -173,13 +1060,27 @@
                 >
 
                 <div class="candidate-content">
+
                     <h3>Paslon 3</h3>
-                    <p class="candidate-name">Qeysha &amp; Michael</p>
-                    <p class="vision">"Mewujudkan OSIS yang terbuka, responsif, dan menjadi wadah bagi seluruh siswa untuk menyampaikan aspirasi, mengembangkan potensi, bakat, serta menciptakan lingkungan sekolah yang positif."</p>
-                    <div class="select-text">Klik untuk memilih</div>
+
+                    <p class="candidate-name">
+                        Qeysha &amp; Michael
+                    </p>
+
+                    <p class="vision">
+                        "Mewujudkan OSIS yang terbuka, responsif, dan menjadi wadah bagi seluruh siswa untuk menyampaikan aspirasi, mengembangkan potensi, bakat, serta menciptakan lingkungan sekolah yang positif."
+                    </p>
+
+                    <div class="select-text">
+                        Klik untuk memilih
+                    </div>
+
                 </div>
+
             </article>
 
+
+            <!-- PASLON 4 -->
             <article
                 class="candidate-card"
                 onclick="vote(4)"
@@ -188,7 +1089,10 @@
                 tabindex="0"
                 aria-label="Pilih Paslon 4"
             >
-                <div class="candidate-number">04</div>
+
+                <div class="candidate-number">
+                    04
+                </div>
 
                 <img
                     src="foto/paslon4.png"
@@ -197,169 +1101,428 @@
                 >
 
                 <div class="candidate-content">
+
                     <h3>Paslon 4</h3>
-                    <p class="candidate-name">Roman &amp; Dalton</p>
-                    <p class="vision">"Membuat lingkungan sekolah menjadi lebih seru, lebih bersih dan lebih aman/nyaman dan juga membuat para osis untuk lebih inovatif, kreatif, dan unik, serta mengembangkan potensi siswa agar menjadi aktif, kreatif, dan berani berpendapat"</p>
-                    <div class="select-text">Klik untuk memilih</div>
+
+                    <p class="candidate-name">
+                        Roman &amp; Dalton
+                    </p>
+
+                    <p class="vision">
+                        "Membuat lingkungan sekolah menjadi lebih seru, lebih bersih dan lebih aman/nyaman dan juga membuat para osis untuk lebih inovatif, kreatif, dan unik, serta mengembangkan potensi siswa agar menjadi aktif, kreatif, dan berani berpendapat"
+                    </p>
+
+                    <div class="select-text">
+                        Klik untuk memilih
+                    </div>
+
                 </div>
+
             </article>
 
         </section>
+
     </main>
 
-    <!-- KONFIRMASI PILIHAN -->
-    <div id="confirmModal" class="modal">
+
+    <!-- KONFIRMASI -->
+    <div
+        id="confirmModal"
+        class="modal"
+    >
+
         <div class="modal-box confirm-box">
-            <div class="confirm-icon">?</div>
-            <span class="modal-label">KONFIRMASI PILIHAN</span>
-            <h2 id="confirmTitle">Pilih Paslon 1?</h2>
-            <p>Pastikan pilihanmu sudah benar sebelum suara dikirim.</p>
+
+            <div class="confirm-icon">
+                ?
+            </div>
+
+            <span class="modal-label">
+                KONFIRMASI PILIHAN
+            </span>
+
+            <h2 id="confirmTitle">
+                Pilih Paslon 1?
+            </h2>
+
+            <p>
+                Pastikan pilihanmu sudah benar sebelum suara dikirim.
+            </p>
 
             <div class="confirm-actions">
-                <button type="button" class="cancel-btn" onclick="cancelCandidateVote()">Batal</button>
-                <button type="button" class="confirm-btn" onclick="confirmCandidateVote()">Ya, Pilih</button>
+
+                <button
+                    type="button"
+                    class="cancel-btn"
+                    onclick="cancelCandidateVote()"
+                >
+                    Batal
+                </button>
+
+                <button
+                    type="button"
+                    class="confirm-btn"
+                    onclick="confirmCandidateVote()"
+                >
+                    Ya, Pilih
+                </button>
+
             </div>
+
         </div>
+
     </div>
+
 
     <!-- COUNTDOWN -->
-    <div id="countdownModal" class="modal countdown-modal">
+    <div
+        id="countdownModal"
+        class="modal countdown-modal"
+    >
+
         <div class="countdown-box">
-            <span class="countdown-label">SUARA AKAN DIKIRIM</span>
-            <div id="countdownNumber" class="countdown-number">3</div>
-            <p id="countdownCandidate">Paslon 1</p>
+
+            <span class="countdown-label">
+                SUARA AKAN DIKIRIM
+            </span>
+
+            <div
+                id="countdownNumber"
+                class="countdown-number"
+            >
+                3
+            </div>
+
+            <p id="countdownCandidate">
+                Paslon 1
+            </p>
 
             <div class="countdown-track">
-                <div id="countdownProgress" class="countdown-progress"></div>
+
+                <div
+                    id="countdownProgress"
+                    class="countdown-progress"
+                ></div>
+
             </div>
+
         </div>
+
     </div>
+
 
     <!-- BERHASIL -->
-    <div id="successModal" class="modal">
+    <div
+        id="successModal"
+        class="modal"
+    >
+
         <div class="modal-box success-box">
-            <div class="success-icon">✓</div>
-            <span class="modal-label">VOTING SELESAI</span>
-            <h2>Suara Berhasil Dikirim</h2>
-            <p>Terima kasih sudah menggunakan hak pilihmu.</p>
-            <button type="button" class="done-btn" onclick="closeModal()">Selesai</button>
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <span class="modal-label">
+                VOTING SELESAI
+            </span>
+
+            <h2>
+                Suara Berhasil Dikirim
+            </h2>
+
+            <p>
+                Terima kasih sudah menggunakan hak pilihmu.
+            </p>
+
+            <button
+                type="button"
+                class="done-btn"
+                onclick="closeModal()"
+            >
+                Selesai
+            </button>
+
         </div>
+
     </div>
 
+
+    <!-- APP.JS MILIKMU -->
     <script src="app.js"></script>
 
+
+    <!-- SISTEM MODAL + COUNTDOWN -->
     <script>
+
         let pendingPaslon = null;
         let countdownTimer = null;
 
         const originalVote = window.vote;
 
+
         window.vote = function (paslon) {
-            if (document.body.classList.contains("vote-processing")) return;
+
+            if (
+                document.body.classList.contains(
+                    "vote-processing"
+                )
+            ) return;
 
             pendingPaslon = paslon;
-            document.getElementById("confirmTitle").textContent = `Pilih Paslon ${paslon}?`;
-            document.getElementById("confirmModal").classList.add("show");
-            document.body.classList.add("modal-open");
+
+            document
+                .getElementById("confirmTitle")
+                .textContent =
+                `Pilih Paslon ${paslon}?`;
+
+            document
+                .getElementById("confirmModal")
+                .classList.add("show");
+
+            document.body.classList.add(
+                "modal-open"
+            );
         };
 
+
         function cancelCandidateVote() {
+
             pendingPaslon = null;
-            document.getElementById("confirmModal").classList.remove("show");
-            document.body.classList.remove("modal-open");
+
+            document
+                .getElementById("confirmModal")
+                .classList.remove("show");
+
+            document.body.classList.remove(
+                "modal-open"
+            );
         }
+
 
         function confirmCandidateVote() {
-            if (!pendingPaslon || typeof originalVote !== "function") return;
 
-            const selectedPaslon = pendingPaslon;
+            if (
+                !pendingPaslon ||
+                typeof originalVote !== "function"
+            ) return;
 
-            document.getElementById("confirmModal").classList.remove("show");
-            document.getElementById("countdownCandidate").textContent = `Paslon ${selectedPaslon}`;
+            const selectedPaslon =
+                pendingPaslon;
 
-            document.body.classList.add("modal-open", "vote-processing");
-            startVoteCountdown(selectedPaslon);
+            document
+                .getElementById("confirmModal")
+                .classList.remove("show");
+
+            document
+                .getElementById("countdownCandidate")
+                .textContent =
+                `Paslon ${selectedPaslon}`;
+
+            document.body.classList.add(
+                "modal-open",
+                "vote-processing"
+            );
+
+            startVoteCountdown(
+                selectedPaslon
+            );
         }
 
+
         function startVoteCountdown(paslon) {
-            const modal = document.getElementById("countdownModal");
-            const number = document.getElementById("countdownNumber");
-            const progress = document.getElementById("countdownProgress");
+
+            const modal =
+                document.getElementById(
+                    "countdownModal"
+                );
+
+            const number =
+                document.getElementById(
+                    "countdownNumber"
+                );
+
+            const progress =
+                document.getElementById(
+                    "countdownProgress"
+                );
 
             let count = 3;
 
             modal.classList.add("show");
-            number.textContent = count;
-            restartCountdownAnimation(number);
 
-            progress.classList.remove("run");
+            number.textContent = count;
+
+            restartCountdownAnimation(
+                number
+            );
+
+            progress.classList.remove(
+                "run"
+            );
+
             requestAnimationFrame(() => {
-                requestAnimationFrame(() => progress.classList.add("run"));
+
+                requestAnimationFrame(
+                    () =>
+                        progress.classList.add(
+                            "run"
+                        )
+                );
+
             });
 
-            clearInterval(countdownTimer);
+            clearInterval(
+                countdownTimer
+            );
 
-            countdownTimer = setInterval(() => {
-                count--;
 
-                if (count > 0) {
-                    number.textContent = count;
-                    restartCountdownAnimation(number);
-                    return;
-                }
+            countdownTimer =
+                setInterval(() => {
 
-                clearInterval(countdownTimer);
+                    count--;
 
-                number.textContent = "✓";
-                number.classList.add("countdown-finish");
+                    if (count > 0) {
 
-                setTimeout(() => {
-                    modal.classList.remove("show");
+                        number.textContent =
+                            count;
 
-                    const nativeConfirm = window.confirm;
-                    window.confirm = () => true;
+                        restartCountdownAnimation(
+                            number
+                        );
 
-                    try {
-                        originalVote(paslon);
-                    } finally {
-                        window.confirm = nativeConfirm;
+                        return;
                     }
 
-                    pendingPaslon = null;
+
+                    clearInterval(
+                        countdownTimer
+                    );
+
+
+                    number.textContent = "✓";
+
+                    number.classList.add(
+                        "countdown-finish"
+                    );
+
 
                     setTimeout(() => {
-                        number.classList.remove("countdown-finish");
-                        document.body.classList.remove("modal-open", "vote-processing");
-                    }, 500);
 
-                }, 450);
+                        modal.classList.remove(
+                            "show"
+                        );
 
-            }, 800);
+                        const nativeConfirm =
+                            window.confirm;
+
+                        window.confirm =
+                            () => true;
+
+
+                        try {
+
+                            originalVote(
+                                paslon
+                            );
+
+                        } finally {
+
+                            window.confirm =
+                                nativeConfirm;
+                        }
+
+
+                        pendingPaslon =
+                            null;
+
+
+                        setTimeout(() => {
+
+                            number.classList.remove(
+                                "countdown-finish"
+                            );
+
+                            document.body.classList.remove(
+                                "modal-open",
+                                "vote-processing"
+                            );
+
+                        }, 500);
+
+
+                    }, 450);
+
+
+                }, 800);
+
         }
 
-        function restartCountdownAnimation(element) {
-            element.classList.remove("countdown-pop");
+
+        function restartCountdownAnimation(
+            element
+        ) {
+
+            element.classList.remove(
+                "countdown-pop"
+            );
+
             void element.offsetWidth;
-            element.classList.add("countdown-pop");
+
+            element.classList.add(
+                "countdown-pop"
+            );
         }
 
-        const originalCloseModal = window.closeModal;
 
-        window.closeModal = function () {
-            const modal = document.getElementById("successModal");
-            modal.classList.add("closing");
+        const originalCloseModal =
+            window.closeModal;
 
-            setTimeout(() => {
-                if (typeof originalCloseModal === "function") {
-                    originalCloseModal();
-                } else {
-                    modal.classList.remove("show");
-                }
 
-                modal.classList.remove("closing");
-                document.body.classList.remove("modal-open", "vote-processing");
-            }, 260);
-        };
+        window.closeModal =
+            function () {
+
+                const modal =
+                    document.getElementById(
+                        "successModal"
+                    );
+
+                modal.classList.add(
+                    "closing"
+                );
+
+
+                setTimeout(() => {
+
+                    if (
+                        typeof originalCloseModal ===
+                        "function"
+                    ) {
+
+                        originalCloseModal();
+
+                    } else {
+
+                        modal.classList.remove(
+                            "show"
+                        );
+                    }
+
+
+                    modal.classList.remove(
+                        "closing"
+                    );
+
+                    document.body.classList.remove(
+                        "modal-open",
+                        "vote-processing"
+                    );
+
+                }, 260);
+
+            };
+
     </script>
+
 </body>
 </html>
