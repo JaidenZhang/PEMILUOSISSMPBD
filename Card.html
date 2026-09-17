@@ -1,3447 +1,416 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pemilihan Ketua dan Wakil Ketua OSIS</title>
-
-    <style>
-        /* =========================================
-   BACKGROUND + LIGHT BLUE PARTICLES
-========================================= */
-
-body {
-    position: relative;
-    min-height: 100vh;
-    overflow-x: hidden;
-    background:
-        radial-gradient(
-            circle at 20% 20%,
-            rgba(147, 211, 255, 0.13),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 80% 60%,
-            rgba(105, 190, 255, 0.10),
-            transparent 32%
-        ),
-        linear-gradient(
-            180deg,
-            #fafdff 0%,
-            #f5faff 45%,
-            #ffffff 100%
-        );
-}
-
-
-/* =========================================
-   PARTICLE CANVAS
-========================================= */
-
-#particleCanvas {
-    position: fixed;
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    z-index: -3;
-
-    pointer-events: none;
-}
-
-
-/* =========================================
-   FLOATING LIGHT ORBS
-========================================= */
-
-.bg-orb {
-    position: fixed;
-
-    border-radius: 50%;
-
-    filter: blur(70px);
-
-    pointer-events: none;
-
-    z-index: -2;
-
-    opacity: 0.3;
-
-    animation: orbFloat 12s ease-in-out infinite alternate;
-}
-
-.orb-1 {
-    width: 320px;
-    height: 320px;
-
-    top: 5%;
-    left: -100px;
-
-    background: rgba(115, 200, 255, 0.35);
-}
-
-.orb-2 {
-    width: 400px;
-    height: 400px;
-
-    right: -150px;
-    top: 35%;
-
-    background: rgba(165, 220, 255, 0.30);
-
-    animation-delay: -4s;
-}
-
-.orb-3 {
-    width: 260px;
-    height: 260px;
-
-    left: 35%;
-    bottom: -120px;
-
-    background: rgba(104, 188, 255, 0.22);
-
-    animation-delay: -8s;
-}
-
-@keyframes orbFloat {
-
-    0% {
-        transform:
-            translate3d(0, 0, 0)
-            scale(1);
-    }
-
-    100% {
-        transform:
-            translate3d(50px, -35px, 0)
-            scale(1.12);
-    }
-}
-
-
-/* =========================================
-   CONTAINER
-========================================= */
-
-.container {
-    width: min(1450px, 94%);
-
-    margin: 0 auto;
-
-    padding: 55px 0 70px;
-}
-
-
-/* =========================================
-   HERO
-========================================= */
-
-.hero {
-    max-width: 700px;
-
-    margin-bottom: 35px;
-}
-
-.hero h2 {
-    font-size: clamp(32px, 4vw, 48px);
-
-    letter-spacing: -0.04em;
-
-    color: #172638;
-}
-
-.hero p {
-    color: #728294;
-}
-
-
-/* =========================================
-   4 CARD DALAM SATU BARIS
-========================================= */
-
-.candidate-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-    gap: 18px;
-
-    width: 100%;
-}
-
-
-/* =========================================
-   CANDIDATE CARD
-========================================= */
-
-.candidate-card {
-    position: relative;
-
-    min-width: 0;
-
-    overflow: hidden;
-
-    background:
-        rgba(255, 255, 255, 0.88);
-
-    border:
-        1px solid rgba(126, 187, 225, 0.20);
-
-    border-radius: 20px;
-
-    box-shadow:
-        0 10px 30px rgba(50, 105, 145, 0.07),
-        inset 0 1px 0 rgba(255, 255, 255, 0.8);
-
-    backdrop-filter:
-        blur(15px);
-
-    cursor: pointer;
-
-    transition:
-        transform 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
-}
-
-
-/* BLUE LIGHT DI ATAS CARD */
-
-.candidate-card::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 15%;
-
-    width: 70%;
-    height: 2px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(107, 190, 245, 0.8),
-            transparent
-        );
-
-    opacity: 0;
-
-    transition: opacity 0.3s ease;
-
-    z-index: 5;
-}
-
-
-/* LIGHT EFFECT */
-
-.candidate-card::after {
-    content: "";
-
-    position: absolute;
-
-    width: 150px;
-    height: 150px;
-
-    top: -80px;
-    right: -80px;
-
-    border-radius: 50%;
-
-    background:
-        rgba(118, 200, 255, 0.10);
-
-    filter: blur(25px);
-
-    pointer-events: none;
-
-    transition:
-        transform 0.5s ease,
-        opacity 0.5s ease;
-}
-
-
-.candidate-card:hover {
-    transform:
-        translateY(-7px);
-
-    border-color:
-        rgba(91, 174, 230, 0.38);
-
-    box-shadow:
-        0 20px 45px rgba(43, 103, 145, 0.12),
-        0 0 35px rgba(105, 192, 248, 0.06);
-}
-
-
-.candidate-card:hover::before {
-    opacity: 1;
-}
-
-
-.candidate-card:hover::after {
-    transform:
-        scale(1.6);
-
-    opacity: 0.8;
-}
-
-
-/* =========================================
-   FOTO
-========================================= */
-
-.candidate-photo {
-    width: 100%;
-
-    height: 210px;
-
-    display: block;
-
-    object-fit: cover;
-
-    object-position: center;
-
-    filter:
-        saturate(0.92)
-        contrast(0.98)
-        brightness(1.02);
-
-    transition:
-        transform 0.45s ease,
-        filter 0.45s ease;
-}
-
-
-.candidate-card:hover
-.candidate-photo {
-
-    transform:
-        scale(1.025);
-
-    filter:
-        saturate(1)
-        contrast(1)
-        brightness(1.03);
-}
-
-
-/* =========================================
-   NOMOR PASLON
-========================================= */
-
-.candidate-number {
-    position: absolute;
-
-    top: 13px;
-    left: 13px;
-
-    z-index: 10;
-
-    width: 40px;
-    height: 40px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 11px;
-
-    background:
-        rgba(255, 255, 255, 0.88);
-
-    border:
-        1px solid rgba(255, 255, 255, 0.8);
-
-    backdrop-filter:
-        blur(12px);
-
-    color:
-        #3977a3;
-
-    font-size:
-        13px;
-
-    font-weight:
-        800;
-
-    box-shadow:
-        0 5px 16px rgba(25, 70, 100, 0.10);
-}
-
-
-/* =========================================
-   CONTENT
-========================================= */
-
-.candidate-content {
-    position: relative;
-
-    padding:
-        18px 18px 19px;
-
-    background:
-        rgba(255, 255, 255, 0.82);
-
-    z-index: 2;
-}
-
-
-.candidate-content h3 {
-
-    margin-bottom:
-        4px;
-
-    color:
-        #5681a0;
-
-    font-size:
-        11px;
-
-    font-weight:
-        800;
-
-    letter-spacing:
-        0.09em;
-
-    text-transform:
-        uppercase;
-}
-
-
-.candidate-name {
-
-    margin-bottom:
-        10px;
-
-    color:
-        #182738;
-
-    font-size:
-        19px;
-
-    font-weight:
-        750;
-
-    letter-spacing:
-        -0.025em;
-}
-
-
-/* =========================================
-   VISI DIBUAT LEBIH COMPACT
-========================================= */
-
-.vision {
-
-    display:
-        -webkit-box;
-
-    -webkit-line-clamp:
-        4;
-
-    -webkit-box-orient:
-        vertical;
-
-    overflow:
-        hidden;
-
-    min-height:
-        76px;
-
-    color:
-        #6c7b89;
-
-    font-size:
-        12px;
-
-    line-height:
-        1.55;
-}
-
-
-/* =========================================
-   SELECT TEXT
-========================================= */
-
-.select-text {
-
-    margin-top:
-        14px;
-
-    padding-top:
-        12px;
-
-    border-top:
-        1px solid rgba(110, 150, 180, 0.12);
-
-    color:
-        #5484a7;
-
-    font-size:
-        11px;
-
-    font-weight:
-        750;
-
-    transition:
-        color 0.25s ease;
-}
-
-
-.candidate-card:hover
-.select-text {
-
-    color:
-        #2878ad;
-}
-
-
-/* =========================================
-   RESPONSIVE
-========================================= */
-
-@media (max-width: 1100px) {
-
-    .candidate-grid {
-
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
-}
-
-
-@media (max-width: 650px) {
-
-    .candidate-grid {
-
-        grid-template-columns:
-            1fr;
-    }
-
-    .candidate-photo {
-
-        height:
-            240px;
-    }
-
-}
-
-        /* =========================================================
-   VOTING PAGE — OSIS
-   ========================================================= */
-
-:root {
-    --navy: #14283d;
-    --navy-soft: #29445d;
-
-    --blue: #3d91c9;
-    --blue-light: #73caff;
-    --blue-pale: #eaf7ff;
-
-    --text: #1c2d3e;
-    --muted: #718294;
-
-    --white: #ffffff;
-
-    --card-radius: 22px;
-
-    --shadow-card:
-        0 14px 40px rgba(47, 102, 139, 0.08);
-
-    --shadow-hover:
-        0 22px 55px rgba(46, 110, 151, 0.15);
-}
-
-
-/* =========================================================
-   RESET
-   ========================================================= */
-
-* {
-    box-sizing: border-box;
-}
-
-html {
-    width: 100%;
-    min-height: 100%;
-}
-
-body {
-    margin: 0;
-}
-
-
-/* =========================================================
-   MAIN BODY
-   ========================================================= */
-
-body.voting-page {
-
-    position: relative;
-
-    width: 100%;
-    height: 100dvh;
-    min-height: 100dvh;
-
-    overflow: hidden;
-
-    font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
-    color: var(--text);
-
-    background:
-        radial-gradient(
-            circle at 12% 12%,
-            rgba(112, 201, 255, 0.16),
-            transparent 26%
-        ),
-
-        radial-gradient(
-            circle at 88% 50%,
-            rgba(109, 197, 255, 0.12),
-            transparent 30%
-        ),
-
-        radial-gradient(
-            circle at 50% 105%,
-            rgba(141, 216, 255, 0.11),
-            transparent 32%
-        ),
-
-        linear-gradient(
-            180deg,
-            #f8fcff 0%,
-            #f3faff 48%,
-            #ffffff 100%
-        );
-}
-
-
-/* =========================================================
-   BACKGROUND LIGHT
-   ========================================================= */
-
-body.voting-page::before {
-
-    content: "";
-
-    position: fixed;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    background:
-        linear-gradient(
-            115deg,
-            transparent 0%,
-            rgba(255,255,255,0.35) 45%,
-            transparent 70%
-        );
-
-    opacity: 0.7;
-
-    z-index: -4;
-}
-
-
-/* =========================================================
-   PARTICLE CANVAS
-   ========================================================= */
-
-#particleCanvas {
-
-    position: fixed;
-
-    inset: 0;
-
-    width: 100%;
-    height: 100%;
-
-    pointer-events: none;
-
-    z-index: -3;
-}
-
-
-/* =========================================================
-   FLOATING ORBS
-   ========================================================= */
-
-.bg-orb {
-
-    position: fixed;
-
-    border-radius: 50%;
-
-    filter: blur(75px);
-
-    pointer-events: none;
-
-    z-index: -2;
-
-    opacity: 0.3;
-
-    animation:
-        orbFloat 14s ease-in-out infinite alternate;
-}
-
-
-.orb-1 {
-
-    width: 340px;
-    height: 340px;
-
-    top: -80px;
-    left: -100px;
-
-    background:
-        rgba(105, 194, 255, 0.33);
-}
-
-
-.orb-2 {
-
-    width: 430px;
-    height: 430px;
-
-    top: 30%;
-    right: -170px;
-
-    background:
-        rgba(145, 218, 255, 0.28);
-
-    animation-delay: -4s;
-}
-
-
-.orb-3 {
-
-    width: 280px;
-    height: 280px;
-
-    left: 38%;
-    bottom: -150px;
-
-    background:
-        rgba(97, 186, 255, 0.20);
-
-    animation-delay: -8s;
-}
-
-
-@keyframes orbFloat {
-
-    from {
-        transform:
-            translate3d(0, 0, 0)
-            scale(1);
-    }
-
-    to {
-        transform:
-            translate3d(45px, -30px, 0)
-            scale(1.10);
-    }
-
-}
-
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
-.voting-page .header {
-
-    position: relative;
-
-    z-index: 20;
-
-    width: min(1450px, 94%);
-
-    min-height: 76px;
-
-    margin: 0 auto;
-
-    padding:
-        17px 0 12px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 24px;
-}
-
-
-.header-brand {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 13px;
-
-    min-width: 0;
-}
-
-
-.header-logo {
-
-    width: 48px;
-    height: 48px;
-
-    flex: 0 0 48px;
-
-    object-fit: contain;
-
-    filter:
-        drop-shadow(
-            0 7px 15px
-            rgba(42, 112, 151, 0.12)
-        );
-}
-
-
-.header-title {
-
-    min-width: 0;
-}
-
-
-.header-title h1 {
-
-    margin: 0;
-
-    color: var(--navy);
-
-    font-size:
-        clamp(15px, 1.6vw, 21px);
-
-    font-weight: 800;
-
-    letter-spacing: -0.025em;
-
-    line-height: 1.2;
-}
-
-
-.header-title p {
-
-    margin: 4px 0 0;
-
-    color: var(--muted);
-
-    font-size: 11px;
-
-    font-weight: 600;
-
-    letter-spacing: 0.02em;
-}
-
-
-/* =========================================================
-   RESULT BUTTON
-   ========================================================= */
-
-.result-btn {
-
-    position: relative;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    min-height: 40px;
-
-    padding:
-        0 17px;
-
-    border-radius: 12px;
-
-    border:
-        1px solid
-        rgba(93, 171, 220, 0.24);
-
-    background:
-        rgba(255, 255, 255, 0.74);
-
-    color:
-        #3979a3;
-
-    text-decoration: none;
-
-    font-size: 11px;
-
-    font-weight: 800;
-
-    letter-spacing: 0.03em;
-
-    backdrop-filter:
-        blur(14px);
-
-    box-shadow:
-        0 7px 20px
-        rgba(46, 101, 135, 0.06);
-
-    transition:
-        transform 0.25s ease,
-        border-color 0.25s ease,
-        box-shadow 0.25s ease,
-        background 0.25s ease;
-}
-
-
-.result-btn:hover {
-
-    transform:
-        translateY(-2px);
-
-    border-color:
-        rgba(61, 145, 201, 0.42);
-
-    background:
-        rgba(255,255,255,0.95);
-
-    box-shadow:
-        0 12px 27px
-        rgba(50, 113, 150, 0.11);
-}
-
-
-/* =========================================================
-   MAIN CONTAINER
-   ========================================================= */
-
-.voting-page .container {
-
-    position: relative;
-
-    z-index: 5;
-
-    width: min(1450px, 94%);
-
-    height:
-        calc(100dvh - 76px);
-
-    min-height: 0;
-
-    margin: 0 auto;
-
-    padding:
-        8px 0 25px;
-
-    display: flex;
-
-    flex-direction: column;
-}
-
-
-/* =========================================================
-   HERO
-   ========================================================= */
-
-.voting-page .hero {
-
-    flex:
-        0 0 auto;
-
-    max-width: 850px;
-
-    margin:
-        0 0 18px;
-}
-
-
-.badge {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    gap: 7px;
-
-    padding:
-        7px 11px;
-
-    border-radius: 999px;
-
-    background:
-        rgba(225, 245, 255, 0.78);
-
-    border:
-        1px solid
-        rgba(109, 192, 235, 0.18);
-
-    color:
-        #4b88ab;
-
-    font-size: 9px;
-
-    font-weight: 850;
-
-    letter-spacing: 0.11em;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.8);
-}
-
-
-.voting-page .hero h2 {
-
-    margin:
-        11px 0 6px;
-
-    color:
-        #16293c;
-
-    font-size:
-        clamp(28px, 3.3vw, 46px);
-
-    line-height:
-        1.03;
-
-    letter-spacing:
-        -0.045em;
-}
-
-
-.voting-page .hero p {
-
-    margin: 0;
-
-    color:
-        var(--muted);
-
-    font-size:
-        clamp(11px, 1vw, 13px);
-
-    line-height:
-        1.55;
-}
-
-
-/* =========================================================
-   4 CARD DALAM SATU BARIS
-   ========================================================= */
-
-.candidate-grid {
-
-    flex:
-        1 1 auto;
-
-    min-height: 0;
-
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, minmax(0, 1fr));
-
-    gap:
-        clamp(11px, 1.35vw, 19px);
-
-    align-items: stretch;
-}
-
-
-/* =========================================================
-   CANDIDATE CARD
-   ========================================================= */
-
-.candidate-card {
-
-    position: relative;
-
-    min-width: 0;
-    min-height: 0;
-
-    height: 100%;
-
-    display: flex;
-
-    flex-direction: column;
-
-    overflow: hidden;
-
-    isolation: isolate;
-
-    cursor: pointer;
-
-    border:
-        1px solid
-        rgba(102, 178, 220, 0.20);
-
-    border-radius:
-        var(--card-radius);
-
-    background:
-        rgba(255,255,255,0.86);
-
-    box-shadow:
-        var(--shadow-card);
-
-    backdrop-filter:
-        blur(18px);
-
-    transform:
-        translateY(0)
-        scale(1);
-
-    transition:
-        transform 0.38s
-        cubic-bezier(.2,.8,.2,1),
-
-        box-shadow 0.38s
-        ease,
-
-        border-color 0.30s
-        ease;
-}
-
-
-/* GLOW DALAM CARD */
-
-.candidate-card::before {
-
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    z-index: -1;
-
-    border-radius: inherit;
-
-    background:
-        radial-gradient(
-            circle at 85% 4%,
-            rgba(102, 195, 246, 0.15),
-            transparent 30%
-        ),
-
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,0.30),
-            transparent 55%
-        );
-
-    opacity: 0.7;
-
-    pointer-events: none;
-}
-
-
-/* GARIS CAHAYA ATAS */
-
-.candidate-card::after {
-
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    left: 12%;
-
-    width: 76%;
-    height: 2px;
-
-    z-index: 10;
-
-    border-radius: 999px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(93, 190, 246, 0.95),
-            transparent
-        );
-
-    opacity: 0;
-
-    transform:
-        scaleX(0.55);
-
-    transition:
-        opacity 0.3s ease,
-        transform 0.4s ease;
-}
-
-
-/* =========================================================
-   HOVER
-   ========================================================= */
-
-.candidate-card:hover {
-
-    transform:
-        translateY(-7px);
-
-    border-color:
-        rgba(75, 163, 214, 0.40);
-
-    box-shadow:
-        var(--shadow-hover);
-}
-
-
-.candidate-card:hover::after {
-
-    opacity: 1;
-
-    transform:
-        scaleX(1);
-}
-
-
-/* =========================================================
-   SELECTED STATE
-   ========================================================= */
-
-.candidate-card.is-selected {
-
-    border-color:
-        rgba(53, 151, 213, 0.68);
-
-    transform:
-        translateY(-9px)
-        scale(1.012);
-
-    box-shadow:
-        0 24px 60px
-        rgba(40, 121, 168, 0.17),
-
-        0 0 0 1px
-        rgba(101, 195, 244, 0.12),
-
-        0 0 35px
-        rgba(96, 194, 247, 0.13);
-
-    animation:
-        selectedPulse 0.8s
-        cubic-bezier(.2,.8,.2,1);
-}
-
-
-.candidate-card.is-selected::after {
-
-    opacity: 1;
-
-    transform:
-        scaleX(1);
-}
-
-
-@keyframes selectedPulse {
-
-    0% {
-        transform:
-            translateY(0)
-            scale(0.985);
-    }
-
-    65% {
-        transform:
-            translateY(-11px)
-            scale(1.018);
-    }
-
-    100% {
-        transform:
-            translateY(-9px)
-            scale(1.012);
-    }
-
-}
-
-
-/* =========================================================
-   PHOTO
-   ========================================================= */
-
-.candidate-photo {
-
-    display: block;
-
-    width: 100%;
-
-    height:
-        clamp(
-            150px,
-            27dvh,
-            220px
-        );
-
-    flex:
-        0 0 auto;
-
-    object-fit: cover;
-
-    object-position: center;
-
-    filter:
-        saturate(0.94)
-        contrast(0.98)
-        brightness(1.025);
-
-    transform:
-        scale(1);
-
-    transition:
-        transform 0.55s
-        cubic-bezier(.2,.8,.2,1),
-
-        filter 0.45s ease;
-}
-
-
-.candidate-card:hover
-.candidate-photo,
-.candidate-card.is-selected
-.candidate-photo {
-
-    transform:
-        scale(1.035);
-
-    filter:
-        saturate(1.02)
-        contrast(1)
-        brightness(1.035);
-}
-
-
-/* =========================================================
-   PHOTO SHINE
-   ========================================================= */
-
-.candidate-card > .candidate-photo {
-
-    position: relative;
-}
-
-
-/* =========================================================
-   NUMBER
-   ========================================================= */
-
-.candidate-number {
-
-    position: absolute;
-
-    top: 12px;
-    left: 12px;
-
-    z-index: 15;
-
-    width:
-        clamp(36px, 3vw, 42px);
-
-    height:
-        clamp(36px, 3vw, 42px);
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    border-radius: 12px;
-
-    background:
-        rgba(255,255,255,0.88);
-
-    border:
-        1px solid
-        rgba(255,255,255,0.90);
-
-    backdrop-filter:
-        blur(14px);
-
-    color:
-        #38789f;
-
-    font-size:
-        clamp(11px, 1vw, 13px);
-
-    font-weight: 850;
-
-    box-shadow:
-        0 7px 20px
-        rgba(27,72,101,0.12);
-
-    transition:
-        transform 0.35s ease,
-        background 0.3s ease,
-        color 0.3s ease,
-        box-shadow 0.3s ease;
-}
-
-
-.candidate-card:hover
-.candidate-number {
-
-    transform:
-        translateY(-2px)
-        scale(1.04);
-}
-
-
-.candidate-card.is-selected
-.candidate-number {
-
-    background:
-        linear-gradient(
-            135deg,
-            #ffffff,
-            #e8f7ff
-        );
-
-    color:
-        #2378ac;
-
-    box-shadow:
-        0 9px 24px
-        rgba(40,128,178,0.18);
-}
-
-
-/* =========================================================
-   CARD CONTENT
-   ========================================================= */
-
-.candidate-content {
-
-    position: relative;
-
-    z-index: 5;
-
-    flex:
-        1 1 auto;
-
-    min-height: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-    padding:
-        clamp(14px, 1.5vw, 19px);
-    
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255,255,255,0.90),
-            rgba(255,255,255,0.78)
-        );
-}
-
-
-.candidate-content h3 {
-
-    margin:
-        0 0 4px;
-
-    color:
-        #5686a7;
-
-    font-size:
-        10px;
-
-    line-height: 1;
-
-    font-weight:
-        850;
-
-    letter-spacing:
-        0.11em;
-
-    text-transform:
-        uppercase;
-}
-
-
-.candidate-name {
-
-    margin:
-        0 0 9px;
-
-    color:
-        #17293a;
-
-    font-size:
-        clamp(16px, 1.35vw, 19px);
-
-    font-weight:
-        800;
-
-    letter-spacing:
-        -0.03em;
-
-    line-height:
-        1.15;
-}
-
-
-/* =========================================================
-   VISI
-   ========================================================= */
-
-.vision {
-
-    flex:
-        1 1 auto;
-
-    min-height: 0;
-
-    margin: 0;
-
-    color:
-        #6e7e8d;
-
-    font-size:
-        clamp(10.5px, 0.85vw, 12px);
-
-    line-height:
-        1.52;
-
-    display:
-        -webkit-box;
-
-    -webkit-line-clamp:
-        4;
-
-    -webkit-box-orient:
-        vertical;
-
-    overflow:
-        hidden;
-}
-
-
-/* =========================================================
-   SELECT TEXT
-   ========================================================= */
-
-.select-text {
-
-    position: relative;
-
-    flex:
-        0 0 auto;
-
-    margin-top:
-        12px;
-
-    padding-top:
-        10px;
-
-    border-top:
-        1px solid
-        rgba(110,150,180,0.12);
-
-    color:
-        #5483a4;
-
-    font-size:
-        10px;
-
-    font-weight:
-        800;
-
-    letter-spacing:
-        0.04em;
-
-    transition:
-        color 0.25s ease,
-        transform 0.25s ease;
-}
-
-
-.select-text::after {
-
-    content:
-        "→";
-
-    margin-left:
-        6px;
-
-    display:
-        inline-block;
-
-    transition:
-        transform 0.25s ease;
-}
-
-
-.candidate-card:hover
-.select-text {
-
-    color:
-        #247caf;
-
-    transform:
-        translateX(1px);
-}
-
-
-.candidate-card:hover
-.select-text::after {
-
-    transform:
-        translateX(4px);
-}
-
-
-.candidate-card.is-selected
-.select-text {
-
-    color:
-        #1e77aa;
-}
-
-
-/* =========================================================
-   LOGIN
-   ========================================================= */
-
-.login-screen {
-
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 9999;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 20px;
-
-    background:
-        radial-gradient(
-            circle at 30% 20%,
-            rgba(108, 201, 255, 0.18),
-            transparent 30%
-        ),
-
-        rgba(245, 251, 255, 0.92);
-
-    backdrop-filter:
-        blur(16px);
-}
-
-
-.login-card {
-
-    width:
-        min(410px, 100%);
-
-    padding:
-        30px;
-
-    border-radius:
-        24px;
-
-    background:
-        rgba(255,255,255,0.88);
-
-    border:
-        1px solid
-        rgba(110,182,221,0.20);
-
-    box-shadow:
-        0 30px 80px
-        rgba(43,92,124,0.15);
-
-    backdrop-filter:
-        blur(20px);
-
-    animation:
-        loginIn 0.55s
-        cubic-bezier(.2,.8,.2,1);
-}
-
-
-@keyframes loginIn {
-
-    from {
-        opacity: 0;
-        transform:
-            translateY(15px)
-            scale(0.97);
-    }
-
-    to {
-        opacity: 1;
-        transform:
-            translateY(0)
-            scale(1);
-    }
-
-}
-
-
-.login-logo {
-
-    width: 52px;
-    height: 52px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    margin-bottom: 14px;
-
-    border-radius: 15px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #eaf8ff,
-            #ffffff
-        );
-
-    color:
-        #367ba4;
-
-    font-size: 17px;
-    font-weight: 900;
-
-    box-shadow:
-        0 9px 25px
-        rgba(61,145,201,0.10);
-}
-
-
-.login-label,
-.modal-label,
-.countdown-label {
-
-    color:
-        #5c8aaa;
-
-    font-size:
-        9px;
-
-    font-weight:
-        850;
-
-    letter-spacing:
-        0.12em;
-}
-
-
-.login-card h2 {
-
-    margin:
-        7px 0;
-
-    color:
-        var(--navy);
-
-    font-size:
-        31px;
-
-    letter-spacing:
-        -0.04em;
-}
-
-
-.login-card > p {
-
-    color:
-        var(--muted);
-
-    font-size:
-        12px;
-
-    line-height:
-        1.55;
-}
-
-
-.login-input-group {
-
-    margin-top:
-        16px;
-}
-
-
-.login-input-group label {
-
-    display: block;
-
-    margin-bottom:
-        7px;
-
-    color:
-        #506679;
-
-    font-size:
-        11px;
-
-    font-weight:
-        750;
-}
-
-
-.login-input-group input {
-
-    width: 100%;
-
-    height: 45px;
-
-    padding:
-        0 13px;
-
-    border:
-        1px solid
-        rgba(108,165,198,0.22);
-
-    border-radius:
-        12px;
-
-    outline: none;
-
-    background:
-        rgba(248,252,255,0.88);
-
-    color:
-        #203548;
-
-    font-size:
-        12px;
-
-    transition:
-        border-color 0.25s ease,
-        box-shadow 0.25s ease,
-        background 0.25s ease;
-}
-
-
-.login-input-group input:focus {
-
-    border-color:
-        rgba(64, 154, 214, 0.50);
-
-    background:
-        #ffffff;
-
-    box-shadow:
-        0 0 0 4px
-        rgba(77,174,230,0.08);
-}
-
-
-.login-error {
-
-    min-height: 16px;
-
-    margin:
-        9px 0 0 !important;
-
-    color:
-        #d65c68 !important;
-
-    font-size:
-        11px !important;
-}
-
-
-.login-button {
-
-    width: 100%;
-
-    height: 46px;
-
-    margin-top:
-        12px;
-
-    border: 0;
-
-    border-radius:
-        13px;
-
-    cursor: pointer;
-
-    background:
-        linear-gradient(
-            135deg,
-            #4aa3d6,
-            #307fae
-        );
-
-    color:
-        #ffffff;
-
-    font-size:
-        12px;
-
-    font-weight:
-        800;
-
-    box-shadow:
-        0 12px 25px
-        rgba(55,135,181,0.18);
-
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-}
-
-
-.login-button:hover {
-
-    transform:
-        translateY(-2px);
-
-    box-shadow:
-        0 17px 32px
-        rgba(55,135,181,0.23);
-}
-
-
-/* =========================================================
-   MODAL
-   ========================================================= */
-
-.modal {
-
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 5000;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 20px;
-
-    background:
-        rgba(17, 37, 53, 0.22);
-
-    backdrop-filter:
-        blur(10px);
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    pointer-events: none;
-
-    transition:
-        opacity 0.28s ease,
-        visibility 0.28s ease;
-}
-
-
-.modal.show {
-
-    opacity: 1;
-
-    visibility: visible;
-
-    pointer-events: auto;
-}
-
-
-.modal-box,
-.countdown-box {
-
-    width:
-        min(450px, 100%);
-
-    border-radius:
-        24px;
-
-    background:
-        rgba(255,255,255,0.94);
-
-    border:
-        1px solid
-        rgba(115,183,218,0.20);
-
-    box-shadow:
-        0 35px 100px
-        rgba(30,73,100,0.18);
-
-    backdrop-filter:
-        blur(20px);
-
-    transform:
-        translateY(15px)
-        scale(0.96);
-
-    transition:
-        transform 0.35s
-        cubic-bezier(.2,.8,.2,1);
-}
-
-
-.modal.show
-.modal-box,
-.modal.show
-.countdown-box {
-
-    transform:
-        translateY(0)
-        scale(1);
-}
-
-
-.confirm-box,
-.success-box {
-
-    padding:
-        30px;
-}
-
-
-.confirm-icon,
-.success-icon {
-
-    width:
-        52px;
-
-    height:
-        52px;
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    margin-bottom:
-        15px;
-
-    border-radius:
-        16px;
-
-    background:
-        #eaf7ff;
-
-    color:
-        #3584b1;
-
-    font-size:
-        22px;
-
-    font-weight:
-        900;
-
-    box-shadow:
-        0 10px 25px
-        rgba(58,145,197,0.10);
-}
-
-
-.success-icon {
-
-    background:
-        #ecfaff;
-
-    color:
-        #278bb9;
-}
-
-
-.modal-box h2 {
-
-    margin:
-        8px 0 7px;
-
-    color:
-        #172b3e;
-
-    font-size:
-        27px;
-
-    letter-spacing:
-        -0.04em;
-}
-
-
-.modal-box p {
-
-    margin:
-        0;
-
-    color:
-        #748494;
-
-    font-size:
-        12px;
-
-    line-height:
-        1.55;
-}
-
-
-/* =========================================================
-   CONFIRM ACTIONS
-   ========================================================= */
-
-.confirm-actions {
-
-    display:
-        grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:
-        10px;
-
-    margin-top:
-        22px;
-}
-
-
-.cancel-btn,
-.confirm-btn,
-.done-btn {
-
-    height:
-        45px;
-
-    border-radius:
-        12px;
-
-    cursor:
-        pointer;
-
-    font-size:
-        11px;
-
-    font-weight:
-        800;
-
-    transition:
-        transform 0.24s ease,
-        box-shadow 0.24s ease;
-}
-
-
-.cancel-btn {
-
-    border:
-        1px solid
-        rgba(105,156,184,0.20);
-
-    background:
-        #f7fbfe;
-
-    color:
-        #5e7486;
-}
-
-
-.confirm-btn,
-.done-btn {
-
-    border:
-        0;
-
-    background:
-        linear-gradient(
-            135deg,
-            #4aa6d9,
-            #337faa
-        );
-
-    color:
-        white;
-
-    box-shadow:
-        0 10px 24px
-        rgba(50,132,175,0.18);
-}
-
-
-.cancel-btn:hover,
-.confirm-btn:hover,
-.done-btn:hover {
-
-    transform:
-        translateY(-2px);
-}
-
-
-/* =========================================================
-   COUNTDOWN
-   ========================================================= */
-
-.countdown-modal {
-
-    background:
-        rgba(15,34,50,0.28);
-}
-
-
-.countdown-box {
-
-    width:
-        min(350px, 88vw);
-
-    padding:
-        32px 30px;
-
-    text-align:
-        center;
-}
-
-
-.countdown-label {
-
-    display: block;
-
-    margin-bottom:
-        13px;
-}
-
-
-.countdown-number {
-
-    color:
-        #2e82ae;
-
-    font-size:
-        clamp(68px, 10vw, 100px);
-
-    font-weight:
-        850;
-
-    line-height:
-        0.95;
-
-    letter-spacing:
-        -0.06em;
-
-    text-shadow:
-        0 8px 25px
-        rgba(53,140,188,0.13);
-}
-
-
-.countdown-number.countdown-pop {
-
-    animation:
-        countdownPop 0.55s
-        cubic-bezier(.2,.8,.2,1);
-}
-
-
-.countdown-number.countdown-finish {
-
-    color:
-        #2991be;
-
-    animation:
-        countdownFinish 0.45s
-        ease;
-}
-
-
-@keyframes countdownPop {
-
-    0% {
-        opacity: 0;
-        transform:
-            scale(0.60)
-            translateY(10px);
-    }
-
-    60% {
-        opacity: 1;
-        transform:
-            scale(1.12)
-            translateY(0);
-    }
-
-    100% {
-        transform:
-            scale(1);
-    }
-}
-
-
-@keyframes countdownFinish {
-
-    0% {
-        transform:
-            scale(0.75);
-        opacity: 0;
-    }
-
-    65% {
-        transform:
-            scale(1.18);
-        opacity: 1;
-    }
-
-    100% {
-        transform:
-            scale(1);
-    }
-}
-
-
-#countdownCandidate {
-
-    margin:
-        13px 0 17px;
-
-    color:
-        #6c7d8d;
-
-    font-size:
-        12px;
-
-    font-weight:
-        700;
-}
-
-
-/* =========================================================
-   COUNTDOWN PROGRESS
-   ========================================================= */
-
-.countdown-track {
-
-    width:
-        100%;
-
-    height:
-        5px;
-
-    overflow:
-        hidden;
-
-    border-radius:
-        999px;
-
-    background:
-        #e7f3fa;
-}
-
-
-.countdown-progress {
-
-    width:
-        0%;
-
-    height:
-        100%;
-
-    border-radius:
-        inherit;
-
-    background:
-        linear-gradient(
-            90deg,
-            #68c4ef,
-            #338dbb
-        );
-}
-
-
-.countdown-progress.run {
-
-    animation:
-        countdownProgress 2.4s
-        linear forwards;
-}
-
-
-@keyframes countdownProgress {
-
-    from {
-        width: 0%;
-    }
-
-    to {
-        width: 100%;
-    }
-}
-
-
-/* =========================================================
-   SUCCESS
-   ========================================================= */
-
-.done-btn {
-
-    width:
-        100%;
-
-    margin-top:
-        21px;
-}
-
-
-/* =========================================================
-   MODAL BODY LOCK
-   ========================================================= */
-
-body.voting-page.modal-open {
-
-    overflow:
-        hidden;
-}
-
-
-/* =========================================================
-   ENTRY ANIMATION
-   ========================================================= */
-
-.page-enter {
-
-    animation:
-        pageEnter 0.7s
-        cubic-bezier(.2,.8,.2,1)
-        both;
-}
-
-
-.page-enter-1 {
-    animation-delay: 0.05s;
-}
-
-
-.page-enter-2 {
-    animation-delay: 0.12s;
-}
-
-
-.page-enter-3 {
-    animation-delay: 0.19s;
-}
-
-
-@keyframes pageEnter {
-
-    from {
-        opacity: 0;
-
-        transform:
-            translateY(15px);
-    }
-
-    to {
-        opacity: 1;
-
-        transform:
-            translateY(0);
-    }
-
-}
-
-
-/* =========================================================
-   FULLSCREEN / SHORT SCREEN
-   ========================================================= */
-
-@media (max-height: 820px) {
-
-    .voting-page .header {
-
-        min-height:
-            64px;
-
-        padding:
-            12px 0 8px;
-    }
-
-
-    .header-logo {
-
-        width:
-            43px;
-
-        height:
-            43px;
-    }
-
-
-    .voting-page .container {
-
-        height:
-            calc(100dvh - 64px);
-
-        padding-bottom:
-            17px;
-    }
-
-
-    .voting-page .hero {
-
-        margin-bottom:
-            13px;
-    }
-
-
-    .voting-page .hero h2 {
-
-        margin-top:
-            8px;
-
-        font-size:
-            clamp(26px, 3vw, 37px);
-    }
-
-
-    .candidate-grid {
-
-        gap:
-            12px;
-    }
-
-
-    .candidate-photo {
-
-        height:
-            clamp(
-                125px,
-                23dvh,
-                185px
-            );
-    }
-
-
-    .candidate-content {
-
-        padding:
-            13px;
-    }
-
-
-    .candidate-name {
-
-        font-size:
-            16px;
-    }
-
-
-    .vision {
-
-        font-size:
-            10.5px;
-
-        line-height:
-            1.47;
-    }
-
-
-    .select-text {
-
-        margin-top:
-            8px;
-
-        padding-top:
-            8px;
-    }
-
-}
-
-
-/* =========================================================
-   SMALL DESKTOP / TABLET
-   ========================================================= */
-
-@media (max-width: 1050px) {
-
-    .voting-page .container,
-    .voting-page .header {
-
-        width:
-            95%;
-    }
-
-
-    .candidate-grid {
-
-        gap:
-            9px;
-    }
-
-
-    .candidate-content {
-
-        padding:
-            12px;
-    }
-
-
-    .candidate-name {
-
-        font-size:
-            15px;
-    }
-
-
-    .vision {
-
-        font-size:
-            10px;
-
-        -webkit-line-clamp:
-            4;
-    }
-
-}
-
-
-/* =========================================================
-   VERY SMALL WIDTH
-   Tetap 4 kartu dalam SATU BARIS.
-   Scroll hanya horizontal, bukan vertical.
-   ========================================================= */
-
-@media (max-width: 700px) {
-
-    body.voting-page {
-
-        overflow-x:
-            hidden;
-
-        overflow-y:
-            hidden;
-    }
-
-
-    .voting-page .header {
-
-        width:
-            calc(100% - 24px);
-
-        padding-top:
-            10px;
-    }
-
-
-    .header-title h1 {
-
-        font-size:
-            14px;
-    }
-
-
-    .header-title p {
-
-        font-size:
-            9px;
-    }
-
-
-    .result-btn {
-
-        min-height:
-            36px;
-
-        padding:
-            0 12px;
-
-        font-size:
-            10px;
-    }
-
-
-    .voting-page .container {
-
-        width:
-            calc(100% - 24px);
-
-        height:
-            calc(100dvh - 64px);
-    }
-
-
-    .candidate-grid {
-
-        display:
-            grid;
-
-        grid-template-columns:
-            repeat(
-                4,
-                minmax(190px, 1fr)
-            );
-
-        overflow-x:
-            auto;
-
-        overflow-y:
-            hidden;
-
-        padding:
-            3px 2px 8px;
-
-        scroll-snap-type:
-            x mandatory;
-    }
-
-
-    .candidate-card {
-
-        scroll-snap-align:
-            start;
-    }
-
-
-    .candidate-photo {
-
-        height:
-            180px;
-    }
-
-
-    .hero p {
-
-        max-width:
-            330px;
-    }
-
-}
-
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-
-        scroll-behavior:
-            auto !important;
-
-        animation-duration:
-            0.01ms !important;
-
-        animation-iteration-count:
-            1 !important;
-
-        transition-duration:
-            0.01ms !important;
-    }
-
-}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Pemilihan Ketua dan Wakil Ketua OSIS</title>
+<style>
+:root{
+  --navy:#14283d;--text:#1c2d3e;--muted:#718294;--blue:#3d91c9;
+  --blue2:#73caff;--pale:#eaf7ff;--white:#fff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{
+  min-height:100dvh;overflow:hidden;color:var(--text);
+  background:
+    radial-gradient(circle at 10% 10%,rgba(105,200,255,.18),transparent 27%),
+    radial-gradient(circle at 90% 45%,rgba(126,211,255,.15),transparent 30%),
+    linear-gradient(180deg,#f8fcff,#f1f9ff 50%,#fff);
+}
+#particleCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.bg-orb{position:fixed;border-radius:50%;filter:blur(75px);opacity:.28;pointer-events:none;z-index:0;animation:float 12s ease-in-out infinite alternate}
+.o1{width:340px;height:340px;left:-120px;top:-80px;background:#77cfff}
+.o2{width:430px;height:430px;right:-170px;top:30%;background:#a4ddff;animation-delay:-4s}
+.o3{width:280px;height:280px;left:40%;bottom:-150px;background:#6fc8ff;animation-delay:-8s}
+@keyframes float{to{transform:translate(45px,-28px) scale(1.1)}}
+
+.header,.container{position:relative;z-index:2;width:min(1450px,95%);margin:auto}
+.header{height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.logo{width:46px;height:46px;object-fit:contain;filter:drop-shadow(0 7px 15px rgba(42,112,151,.12))}
+.brand h1{font-size:clamp(14px,1.5vw,20px);margin:0;color:var(--navy);letter-spacing:-.02em}
+.brand p{font-size:10px;margin:3px 0 0;color:var(--muted);font-weight:650}
+.result-btn{padding:10px 15px;border-radius:12px;border:1px solid rgba(93,171,220,.25);background:rgba(255,255,255,.78);color:#3979a3;text-decoration:none;font-size:11px;font-weight:800;backdrop-filter:blur(14px)}
+
+.container{height:calc(100dvh - 72px);display:flex;flex-direction:column;padding:5px 0 22px}
+.hero{flex:0 0 auto;margin:0 0 15px}
+.badge{display:inline-flex;padding:7px 11px;border-radius:999px;background:rgba(225,245,255,.82);border:1px solid rgba(109,192,235,.2);color:#4b88ab;font-size:9px;font-weight:900;letter-spacing:.11em}
+.hero h2{font-size:clamp(27px,3.2vw,44px);line-height:1.03;margin:10px 0 5px;color:#16293c;letter-spacing:-.045em}
+.hero p{margin:0;color:var(--muted);font-size:12px}
+
+.candidate-grid{
+  flex:1;min-height:0;display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(9px,1.25vw,18px);
+  overflow-x:auto;overflow-y:hidden;padding:3px 2px 9px;
+}
+.candidate-card{
+  --mx:50%;--my:0%;
+  position:relative;isolation:isolate;min-width:0;height:100%;overflow:hidden;
+  display:flex;flex-direction:column;cursor:pointer;border-radius:22px;
+  border:1px solid rgba(102,178,220,.22);
+  background:
+    radial-gradient(circle at var(--mx) var(--my),rgba(112,205,255,.17),transparent 32%),
+    linear-gradient(160deg,rgba(255,255,255,.96),rgba(236,248,255,.78));
+  box-shadow:0 14px 40px rgba(47,102,139,.09),inset 0 1px rgba(255,255,255,.9);
+  backdrop-filter:blur(18px);
+  transition:transform .38s cubic-bezier(.2,.8,.2,1),box-shadow .38s,border-color .3s,filter .3s;
+}
+.candidate-card::before{
+  content:"";position:absolute;inset:-45%;z-index:8;pointer-events:none;opacity:0;
+  background:conic-gradient(from 0deg,transparent 0 25%,rgba(116,211,255,.42) 35%,transparent 47% 72%,rgba(255,255,255,.7) 82%,transparent 92%);
+}
+.candidate-card::after{
+  content:"";position:absolute;left:10%;top:0;width:80%;height:2px;z-index:12;opacity:.45;
+  background:linear-gradient(90deg,transparent,#75d0ff,transparent);
+  box-shadow:0 0 18px rgba(85,190,245,.45);
+}
+.candidate-card:hover{transform:translateY(-7px);border-color:rgba(67,161,218,.45);box-shadow:0 24px 58px rgba(46,110,151,.16),0 0 32px rgba(91,193,248,.10)}
+.candidate-card.is-dimmed{filter:saturate(.78) brightness(.97);transform:scale(.985);opacity:.72}
+.candidate-card.is-selected{
+  z-index:20;transform:translateY(-9px) scale(1.018);
+  border-color:rgba(57,169,230,.85);
+  box-shadow:0 28px 75px rgba(35,127,180,.22),0 0 0 2px rgba(114,211,255,.16),0 0 48px rgba(91,197,255,.25);
+  animation:selectedBreath .8s ease-in-out infinite alternate;
+}
+.candidate-card.is-selected::before{opacity:1;animation:spinGlow 2.2s linear infinite}
+@keyframes spinGlow{to{transform:rotate(360deg)}}
+@keyframes selectedBreath{to{box-shadow:0 30px 82px rgba(35,127,180,.26),0 0 0 3px rgba(114,211,255,.19),0 0 65px rgba(91,197,255,.32)}}
+.card-fx{position:absolute;inset:0;z-index:30;pointer-events:none;overflow:hidden;border-radius:inherit}
+.spark{
+  position:absolute;left:50%;top:50%;width:7px;height:7px;border-radius:50%;
+  background:radial-gradient(circle,#fff 0 20%,#7ed8ff 45%,rgba(90,195,255,0) 72%);
+  box-shadow:0 0 12px #7ed8ff;animation:spark .72s cubic-bezier(.15,.7,.2,1) forwards;
+}
+@keyframes spark{from{transform:translate(-50%,-50%) scale(.2);opacity:0}20%{opacity:1}to{transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(var(--s));opacity:0}}
+.ring{position:absolute;left:50%;top:50%;width:30px;height:30px;border:2px solid rgba(105,205,255,.9);border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 22px rgba(83,190,245,.6);animation:ring .72s ease-out forwards}
+@keyframes ring{to{width:145%;height:145%;opacity:0}}
+.scan{position:absolute;left:-20%;top:-30%;width:140%;height:18%;background:linear-gradient(180deg,transparent,rgba(165,228,255,.36),rgba(255,255,255,.45),transparent);filter:blur(3px);transform:rotate(-7deg);animation:scan .72s ease-out forwards}
+@keyframes scan{to{top:115%;opacity:0}}
+.card-count{
+  position:absolute;inset:0;z-index:31;display:grid;place-items:center;pointer-events:none;
+  font-size:clamp(75px,8vw,120px);font-weight:950;color:white;
+  text-shadow:0 0 10px #62c8ff,0 0 35px #43b6f2,0 10px 35px rgba(27,108,154,.35);
+  opacity:0;transform:scale(.5);
+}
+.card-count.pop{animation:cardCount .72s cubic-bezier(.18,.85,.22,1) forwards}
+@keyframes cardCount{0%{opacity:0;transform:scale(.45) rotate(-5deg)}35%{opacity:1;transform:scale(1.16) rotate(2deg)}70%{opacity:1;transform:scale(.98)}100%{opacity:0;transform:scale(1.08)}}
+
+.photo-wrap{position:relative;overflow:hidden;flex:0 0 auto}
+.candidate-photo{display:block;width:100%;height:clamp(135px,25dvh,215px);object-fit:cover;object-position:center;filter:saturate(.96) contrast(.99) brightness(1.02);transition:.5s}
+.candidate-card:hover .candidate-photo,.candidate-card.is-selected .candidate-photo{transform:scale(1.04);filter:saturate(1.04) brightness(1.04)}
+.photo-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.28) 45%,transparent 62%);transform:translateX(-130%);transition:.7s}
+.candidate-card:hover .photo-wrap::after,.candidate-card.is-selected .photo-wrap::after{transform:translateX(130%)}
+.candidate-number{position:absolute;z-index:15;left:12px;top:12px;width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:rgba(255,255,255,.9);border:1px solid white;color:#337ca7;font-size:12px;font-weight:900;box-shadow:0 7px 20px rgba(27,72,101,.13);backdrop-filter:blur(12px)}
+.candidate-content{position:relative;z-index:5;flex:1;min-height:0;display:flex;flex-direction:column;padding:clamp(12px,1.35vw,18px);background:linear-gradient(180deg,rgba(255,255,255,.91),rgba(245,251,255,.78))}
+.candidate-content h3{margin:0 0 4px;color:#5686a7;font-size:10px;font-weight:900;letter-spacing:.11em;text-transform:uppercase}
+.candidate-name{margin:0 0 8px;color:#17293a;font-size:clamp(14px,1.25vw,18px);font-weight:850;letter-spacing:-.025em}
+.vision{flex:1;min-height:0;margin:0;color:#6e7e8d;font-size:clamp(9.5px,.78vw,11.5px);line-height:1.48;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.select-text{margin-top:9px;padding-top:9px;border-top:1px solid rgba(110,150,180,.13);color:#4d83a5;font-size:10px;font-weight:850}
+.select-text::after{content:" →"}
+
+.login-screen,.modal{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(14px)}
+.login-screen{background:rgba(244,251,255,.93)}
+.login-card,.modal-box{width:min(420px,100%);padding:29px;border-radius:24px;background:rgba(255,255,255,.94);border:1px solid rgba(110,182,221,.22);box-shadow:0 32px 90px rgba(38,87,118,.17)}
+.login-logo{width:54px;height:54px;display:grid;place-items:center;border-radius:16px;background:linear-gradient(135deg,#e8f8ff,#fff);color:#367ba4;font-weight:950;margin-bottom:14px}
+.login-label,.modal-label{font-size:9px;color:#5c8aaa;font-weight:900;letter-spacing:.12em}
+.login-card h2,.modal-box h2{margin:7px 0;color:var(--navy);font-size:29px;letter-spacing:-.04em}
+.login-card>p,.modal-box p{color:var(--muted);font-size:12px;line-height:1.5}
+.field{margin-top:14px}.field label{display:block;margin-bottom:6px;color:#506679;font-size:11px;font-weight:800}
+.field input{width:100%;height:45px;padding:0 13px;border:1px solid rgba(108,165,198,.25);border-radius:12px;outline:none;background:#f8fcff;color:#203548}
+.field input:focus{border-color:#63b8e7;box-shadow:0 0 0 4px rgba(77,174,230,.09)}
+.login-error{min-height:17px;margin:8px 0 0;color:#d65361!important;font-size:11px!important}
+.primary,.secondary{height:45px;border-radius:12px;font-weight:850;cursor:pointer}
+.primary{border:0;background:linear-gradient(135deg,#4aa6d9,#337faa);color:white;box-shadow:0 10px 24px rgba(50,132,175,.18)}
+.secondary{border:1px solid rgba(105,156,184,.22);background:#f7fbfe;color:#5e7486}
+.login-button{width:100%;margin-top:10px}.primary:disabled{opacity:.55;cursor:wait}
+.modal{background:rgba(17,37,53,.25);opacity:0;visibility:hidden;pointer-events:none;transition:.25s}
+.modal.show{opacity:1;visibility:visible;pointer-events:auto}
+.modal-box{transform:translateY(14px) scale(.96);transition:.3s}.modal.show .modal-box{transform:none}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.success-icon{width:54px;height:54px;display:grid;place-items:center;border-radius:17px;background:#eaf9ff;color:#2587b6;font-size:23px;font-weight:950}
+#countdownModal{background:rgba(13,31,45,.18);backdrop-filter:blur(5px)}
+.countdown-panel{width:min(300px,82vw);padding:21px;text-align:center;border-radius:22px;background:rgba(255,255,255,.80);border:1px solid rgba(122,205,246,.32);box-shadow:0 25px 80px rgba(35,105,147,.16);backdrop-filter:blur(20px)}
+.countdown-number{font-size:76px;line-height:1;font-weight:950;color:#3189b7;text-shadow:0 8px 28px rgba(53,140,188,.18)}
+.countdown-candidate{font-size:11px;color:#6c7d8d;font-weight:800;margin-top:7px}
+.track{height:5px;margin-top:14px;border-radius:99px;overflow:hidden;background:#e4f2f9}.progress{height:100%;width:0;background:linear-gradient(90deg,#7ad4ff,#338dbb)}
+.progress.run{animation:progress 2.4s linear forwards}@keyframes progress{to{width:100%}}
+.hidden{display:none!important}
+@media(max-height:800px){.header{height:62px}.container{height:calc(100dvh - 62px)}.candidate-photo{height:clamp(115px,21dvh,170px)}.hero{margin-bottom:10px}.hero h2{font-size:30px}.candidate-content{padding:11px}.vision{font-size:9.5px}}
+@media(max-width:760px){
+  body{overflow:hidden}.header,.container{width:calc(100% - 22px)}
+  .brand p{display:none}.result-btn{padding:9px 11px}
+  .candidate-grid{grid-template-columns:repeat(4,minmax(190px,1fr));scroll-snap-type:x mandatory}
+  .candidate-card{scroll-snap-align:start}.candidate-photo{height:170px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
 </head>
-
-<body class="voting-page">
-
-    <!-- LOGIN -->
-    <div id="loginScreen" class="login-screen">
-
-        <div class="login-card">
-
-            <div class="login-logo">
-                OS
-            </div>
-
-            <span class="login-label">
-                SISTEM PEMILIHAN
-            </span>
-
-            <h2>Login</h2>
-
-            <p>
-                Masukkan akses untuk membuka sistem pemilihan.
-            </p>
-
-            <div class="login-input-group">
-                <label>Username</label>
-
-                <input
-                    type="text"
-                    id="loginUsername"
-                    placeholder="Masukkan username"
-                    autocomplete="off"
-                >
-            </div>
-
-            <div class="login-input-group">
-                <label>Password</label>
-
-                <input
-                    type="password"
-                    id="loginPassword"
-                    placeholder="Masukkan password"
-                >
-            </div>
-
-            <p
-                id="loginError"
-                class="login-error"
-            ></p>
-
-            <button
-                id="loginButton"
-                class="login-button"
-                onclick="loginVoting()"
-            >
-                Masuk
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- HEADER -->
-    <header class="header page-enter page-enter-1">
-
-        <div class="header-brand">
-
-            <img
-                src="Logo OSIS SMPBD.png"
-                alt="Logo OSIS"
-                class="header-logo"
-            >
-
-            <div class="header-title">
-                <h1>Pemilihan Ketua dan Wakil Ketua OSIS</h1>
-                <p>OSIS SMP Bodhi Dharma</p>
-            </div>
-
-        </div>
-
-        <a
-            href="grafik.html"
-            class="result-btn"
-        >
-            Lihat Hasil
-        </a>
-
-    </header>
-
-
-    <!-- MAIN -->
-    <main class="container">
-
-        <section class="hero page-enter page-enter-2">
-
-            <span class="badge">
-                PEMILIHAN OSIS 2026
-            </span>
-
-            <h2>
-                Pilih Pasangan Calonmu
-            </h2>
-
-            <p>
-                Klik seluruh bagian kartu untuk memilih pasangan calon.
-            </p>
-
-        </section>
-
-
-        <section class="candidate-grid page-enter page-enter-3">
-
-
-            <!-- PASLON 1 -->
-            <article
-                class="candidate-card"
-                onclick="vote(1)"
-                onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); vote(1); }"
-                role="button"
-                tabindex="0"
-                aria-label="Pilih Paslon 1"
-            >
-
-                <div class="candidate-number">
-                    01
-                </div>
-
-                <img
-                    src="foto/paslon1.png"
-                    alt="Paslon 1"
-                    class="candidate-photo"
-                >
-
-                <div class="candidate-content">
-
-                    <h3>Paslon 1</h3>
-
-                    <p class="candidate-name">
-                        Viola &amp; Gracya
-                    </p>
-
-                    <p class="vision">
-                        "Mewujudkan OSIS yang aktif, terbuka, dan dekat dengan peserta didik dengan menjadikan OSIS sebagai wadah pengembangan potensi, menyampaikan aspirasi dan kritik dan membangun lingkungan sekolah yang komunikatif, positif, dan saling menghargai"
-                    </p>
-
-                    <div class="select-text">
-                        Klik untuk memilih
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- PASLON 2 -->
-            <article
-                class="candidate-card"
-                onclick="vote(2)"
-                onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); vote(2); }"
-                role="button"
-                tabindex="0"
-                aria-label="Pilih Paslon 2"
-            >
-
-                <div class="candidate-number">
-                    02
-                </div>
-
-                <img
-                    src="foto/paslon2.png"
-                    alt="Paslon 2"
-                    class="candidate-photo"
-                >
-
-                <div class="candidate-content">
-
-                    <h3>Paslon 2</h3>
-
-                    <p class="candidate-name">
-                        Joline &amp; Darsilius
-                    </p>
-
-                    <p class="vision">
-                        "Mewujudkan OSIS sebagai wadah bagi seluruh siswa untuk berkembang, berkarya, menyampaikan aspirasi, serta menciptakan lingkungan sekolah yang aktif, nyaman, kompak, dan penuh semangat positif."
-                    </p>
-
-                    <div class="select-text">
-                        Klik untuk memilih
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- PASLON 3 -->
-            <article
-                class="candidate-card"
-                onclick="vote(3)"
-                onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); vote(3); }"
-                role="button"
-                tabindex="0"
-                aria-label="Pilih Paslon 3"
-            >
-
-                <div class="candidate-number">
-                    03
-                </div>
-
-                <img
-                    src="foto/paslon3.png"
-                    alt="Paslon 3"
-                    class="candidate-photo"
-                >
-
-                <div class="candidate-content">
-
-                    <h3>Paslon 3</h3>
-
-                    <p class="candidate-name">
-                        Qeysha &amp; Michael
-                    </p>
-
-                    <p class="vision">
-                        "Mewujudkan OSIS yang terbuka, responsif, dan menjadi wadah bagi seluruh siswa untuk menyampaikan aspirasi, mengembangkan potensi, bakat, serta menciptakan lingkungan sekolah yang positif."
-                    </p>
-
-                    <div class="select-text">
-                        Klik untuk memilih
-                    </div>
-
-                </div>
-
-            </article>
-
-
-            <!-- PASLON 4 -->
-            <article
-                class="candidate-card"
-                onclick="vote(4)"
-                onkeydown="if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); vote(4); }"
-                role="button"
-                tabindex="0"
-                aria-label="Pilih Paslon 4"
-            >
-
-                <div class="candidate-number">
-                    04
-                </div>
-
-                <img
-                    src="foto/paslon4.png"
-                    alt="Paslon 4"
-                    class="candidate-photo"
-                >
-
-                <div class="candidate-content">
-
-                    <h3>Paslon 4</h3>
-
-                    <p class="candidate-name">
-                        Roman &amp; Dalton
-                    </p>
-
-                    <p class="vision">
-                        "Membuat lingkungan sekolah menjadi lebih seru, lebih bersih dan lebih aman/nyaman dan juga membuat para osis untuk lebih inovatif, kreatif, dan unik, serta mengembangkan potensi siswa agar menjadi aktif, kreatif, dan berani berpendapat"
-                    </p>
-
-                    <div class="select-text">
-                        Klik untuk memilih
-                    </div>
-
-                </div>
-
-            </article>
-
-        </section>
-
-    </main>
-
-
-    <!-- KONFIRMASI -->
-    <div
-        id="confirmModal"
-        class="modal"
-    >
-
-        <div class="modal-box confirm-box">
-
-            <div class="confirm-icon">
-                ?
-            </div>
-
-            <span class="modal-label">
-                KONFIRMASI PILIHAN
-            </span>
-
-            <h2 id="confirmTitle">
-                Pilih Paslon 1?
-            </h2>
-
-            <p>
-                Pastikan pilihanmu sudah benar sebelum suara dikirim.
-            </p>
-
-            <div class="confirm-actions">
-
-                <button
-                    type="button"
-                    class="cancel-btn"
-                    onclick="cancelCandidateVote()"
-                >
-                    Batal
-                </button>
-
-                <button
-                    type="button"
-                    class="confirm-btn"
-                    onclick="confirmCandidateVote()"
-                >
-                    Ya, Pilih
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- COUNTDOWN -->
-    <div
-        id="countdownModal"
-        class="modal countdown-modal"
-    >
-
-        <div class="countdown-box">
-
-            <span class="countdown-label">
-                SUARA AKAN DIKIRIM
-            </span>
-
-            <div
-                id="countdownNumber"
-                class="countdown-number"
-            >
-                3
-            </div>
-
-            <p id="countdownCandidate">
-                Paslon 1
-            </p>
-
-            <div class="countdown-track">
-
-                <div
-                    id="countdownProgress"
-                    class="countdown-progress"
-                ></div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- BERHASIL -->
-    <div
-        id="successModal"
-        class="modal"
-    >
-
-        <div class="modal-box success-box">
-
-            <div class="success-icon">
-                ✓
-            </div>
-
-            <span class="modal-label">
-                VOTING SELESAI
-            </span>
-
-            <h2>
-                Suara Berhasil Dikirim
-            </h2>
-
-            <p>
-                Terima kasih sudah menggunakan hak pilihmu.
-            </p>
-
-            <button
-                type="button"
-                class="done-btn"
-                onclick="closeModal()"
-            >
-                Selesai
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- APP.JS MILIKMU -->
-    <script src="app.js"></script>
-
-
-    <!-- SISTEM MODAL + COUNTDOWN -->
-    <script>
-
-        let pendingPaslon = null;
-        let countdownTimer = null;
-
-        const originalVote = window.vote;
-
-
-        window.vote = function (paslon) {
-
-            if (
-                document.body.classList.contains(
-                    "vote-processing"
-                )
-            ) return;
-
-            pendingPaslon = paslon;
-
-            document
-                .getElementById("confirmTitle")
-                .textContent =
-                `Pilih Paslon ${paslon}?`;
-
-            document
-                .getElementById("confirmModal")
-                .classList.add("show");
-
-            document.body.classList.add(
-                "modal-open"
-            );
-        };
-
-
-        function cancelCandidateVote() {
-
-            pendingPaslon = null;
-
-            document
-                .getElementById("confirmModal")
-                .classList.remove("show");
-
-            document.body.classList.remove(
-                "modal-open"
-            );
-        }
-
-
-        function confirmCandidateVote() {
-
-            if (
-                !pendingPaslon ||
-                typeof originalVote !== "function"
-            ) return;
-
-            const selectedPaslon =
-                pendingPaslon;
-
-            document
-                .getElementById("confirmModal")
-                .classList.remove("show");
-
-            document
-                .getElementById("countdownCandidate")
-                .textContent =
-                `Paslon ${selectedPaslon}`;
-
-            document.body.classList.add(
-                "modal-open",
-                "vote-processing"
-            );
-
-            startVoteCountdown(
-                selectedPaslon
-            );
-        }
-
-
-        function startVoteCountdown(paslon) {
-
-            const modal =
-                document.getElementById(
-                    "countdownModal"
-                );
-
-            const number =
-                document.getElementById(
-                    "countdownNumber"
-                );
-
-            const progress =
-                document.getElementById(
-                    "countdownProgress"
-                );
-
-            let count = 3;
-
-            modal.classList.add("show");
-
-            number.textContent = count;
-
-            restartCountdownAnimation(
-                number
-            );
-
-            progress.classList.remove(
-                "run"
-            );
-
-            requestAnimationFrame(() => {
-
-                requestAnimationFrame(
-                    () =>
-                        progress.classList.add(
-                            "run"
-                        )
-                );
-
-            });
-
-            clearInterval(
-                countdownTimer
-            );
-
-
-            countdownTimer =
-                setInterval(() => {
-
-                    count--;
-
-                    if (count > 0) {
-
-                        number.textContent =
-                            count;
-
-                        restartCountdownAnimation(
-                            number
-                        );
-
-                        return;
-                    }
-
-
-                    clearInterval(
-                        countdownTimer
-                    );
-
-
-                    number.textContent = "✓";
-
-                    number.classList.add(
-                        "countdown-finish"
-                    );
-
-
-                    setTimeout(() => {
-
-                        modal.classList.remove(
-                            "show"
-                        );
-
-                        const nativeConfirm =
-                            window.confirm;
-
-                        window.confirm =
-                            () => true;
-
-
-                        try {
-
-                            originalVote(
-                                paslon
-                            );
-
-                        } finally {
-
-                            window.confirm =
-                                nativeConfirm;
-                        }
-
-
-                        pendingPaslon =
-                            null;
-
-
-                        setTimeout(() => {
-
-                            number.classList.remove(
-                                "countdown-finish"
-                            );
-
-                            document.body.classList.remove(
-                                "modal-open",
-                                "vote-processing"
-                            );
-
-                        }, 500);
-
-
-                    }, 450);
-
-
-                }, 800);
-
-        }
-
-
-        function restartCountdownAnimation(
-            element
-        ) {
-
-            element.classList.remove(
-                "countdown-pop"
-            );
-
-            void element.offsetWidth;
-
-            element.classList.add(
-                "countdown-pop"
-            );
-        }
-
-
-        const originalCloseModal =
-            window.closeModal;
-
-
-        window.closeModal =
-            function () {
-
-                const modal =
-                    document.getElementById(
-                        "successModal"
-                    );
-
-                modal.classList.add(
-                    "closing"
-                );
-
-
-                setTimeout(() => {
-
-                    if (
-                        typeof originalCloseModal ===
-                        "function"
-                    ) {
-
-                        originalCloseModal();
-
-                    } else {
-
-                        modal.classList.remove(
-                            "show"
-                        );
-                    }
-
-
-                    modal.classList.remove(
-                        "closing"
-                    );
-
-                    document.body.classList.remove(
-                        "modal-open",
-                        "vote-processing"
-                    );
-
-                }, 260);
-
-            };
-
-    </script>
-
+<body>
+<canvas id="particleCanvas"></canvas>
+<div class="bg-orb o1"></div><div class="bg-orb o2"></div><div class="bg-orb o3"></div>
+
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="login-logo">OS</div>
+    <span class="login-label">SISTEM PEMILIHAN</span>
+    <h2>Login</h2>
+    <p>Masukkan akses untuk membuka sistem pemilihan.</p>
+    <div class="field"><label>Username</label><input id="loginUsername" autocomplete="off" placeholder="Masukkan username"></div>
+    <div class="field"><label>Password</label><input id="loginPassword" type="password" placeholder="Masukkan password"></div>
+    <p id="loginError" class="login-error"></p>
+    <button id="loginButton" class="primary login-button" onclick="loginVoting()">Masuk</button>
+  </div>
+</div>
+
+<header class="header">
+  <div class="brand">
+    <img class="logo" src="Logo OSIS SMPBD.png" alt="Logo OSIS">
+    <div><h1>Pemilihan Ketua dan Wakil Ketua OSIS</h1><p>OSIS SMP Bodhi Dharma</p></div>
+  </div>
+  <a class="result-btn" href="grafik.html">Lihat Hasil</a>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <span class="badge">PEMILIHAN OSIS 2026</span>
+    <h2>Pilih Pasangan Calonmu</h2>
+    <p>Klik seluruh bagian kartu untuk memilih pasangan calon.</p>
+  </section>
+
+  <section class="candidate-grid">
+    <article class="candidate-card" data-paslon="1" onclick="vote(1)" tabindex="0" role="button">
+      <div class="card-fx"></div><div class="card-count"></div><div class="candidate-number">01</div>
+      <div class="photo-wrap"><img class="candidate-photo" src="foto/paslon1.png" alt="Paslon 1"></div>
+      <div class="candidate-content"><h3>Paslon 1</h3><p class="candidate-name">Viola &amp; Gracya</p><p class="vision">"Mewujudkan OSIS yang aktif, terbuka, dan dekat dengan peserta didik dengan menjadikan OSIS sebagai wadah pengembangan potensi, menyampaikan aspirasi dan kritik dan membangun lingkungan sekolah yang komunikatif, positif, dan saling menghargai"</p><div class="select-text">Klik untuk memilih</div></div>
+    </article>
+    <article class="candidate-card" data-paslon="2" onclick="vote(2)" tabindex="0" role="button">
+      <div class="card-fx"></div><div class="card-count"></div><div class="candidate-number">02</div>
+      <div class="photo-wrap"><img class="candidate-photo" src="foto/paslon2.png" alt="Paslon 2"></div>
+      <div class="candidate-content"><h3>Paslon 2</h3><p class="candidate-name">Joline &amp; Darsilius</p><p class="vision">"Mewujudkan OSIS sebagai wadah bagi seluruh siswa untuk berkembang, berkarya, menyampaikan aspirasi, serta menciptakan lingkungan sekolah yang aktif, nyaman, kompak, dan penuh semangat positif."</p><div class="select-text">Klik untuk memilih</div></div>
+    </article>
+    <article class="candidate-card" data-paslon="3" onclick="vote(3)" tabindex="0" role="button">
+      <div class="card-fx"></div><div class="card-count"></div><div class="candidate-number">03</div>
+      <div class="photo-wrap"><img class="candidate-photo" src="foto/paslon3.png" alt="Paslon 3"></div>
+      <div class="candidate-content"><h3>Paslon 3</h3><p class="candidate-name">Qeysha &amp; Michael</p><p class="vision">"Mewujudkan OSIS yang terbuka, responsif, dan menjadi wadah bagi seluruh siswa untuk menyampaikan aspirasi, mengembangkan potensi, bakat, serta menciptakan lingkungan sekolah yang positif."</p><div class="select-text">Klik untuk memilih</div></div>
+    </article>
+    <article class="candidate-card" data-paslon="4" onclick="vote(4)" tabindex="0" role="button">
+      <div class="card-fx"></div><div class="card-count"></div><div class="candidate-number">04</div>
+      <div class="photo-wrap"><img class="candidate-photo" src="foto/paslon4.png" alt="Paslon 4"></div>
+      <div class="candidate-content"><h3>Paslon 4</h3><p class="candidate-name">Roman &amp; Dalton</p><p class="vision">"Membuat lingkungan sekolah menjadi lebih seru, lebih bersih dan lebih aman/nyaman dan juga membuat para OSIS untuk lebih inovatif, kreatif, dan unik, serta mengembangkan potensi siswa agar menjadi aktif, kreatif, dan berani berpendapat"</p><div class="select-text">Klik untuk memilih</div></div>
+    </article>
+  </section>
+</main>
+
+<div id="confirmModal" class="modal">
+  <div class="modal-box">
+    <span class="modal-label">KONFIRMASI PILIHAN</span>
+    <h2 id="confirmTitle">Pilih Paslon?</h2>
+    <p>Pastikan pilihanmu sudah benar. Setelah dikirim, suara akan masuk ke Google Sheets.</p>
+    <div class="actions"><button class="secondary" onclick="cancelVote()">Batal</button><button class="primary" onclick="confirmVote()">Ya, pilih</button></div>
+  </div>
+</div>
+
+<div id="countdownModal" class="modal">
+  <div class="countdown-panel">
+    <div id="countdownNumber" class="countdown-number">3</div>
+    <div id="countdownCandidate" class="countdown-candidate">Paslon 1</div>
+    <div class="track"><div id="countdownProgress" class="progress"></div></div>
+  </div>
+</div>
+
+<div id="successModal" class="modal">
+  <div class="modal-box">
+    <div class="success-icon">✓</div>
+    <span class="modal-label">SUARA TERSIMPAN</span>
+    <h2>Berhasil!</h2>
+    <p id="successText">Suaramu sudah berhasil dikirim.</p>
+    <button class="primary login-button" onclick="closeSuccess()">Selesai</button>
+  </div>
+</div>
+
+<script>
+/*
+  WAJIB: ganti URL di bawah dengan URL Web App Google Apps Script milikmu
+  yang berakhiran /exec. Contoh:
+  https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxx/exec
+*/
+const API_URL = "PASTE_URL_GOOGLE_APPS_SCRIPT_EXEC_DI_SINI";
+
+const TOKEN_KEY = "osis_auth_token";
+const USER_KEY = "osis_auth_username";
+let pendingPaslon = null;
+let voteBusy = false;
+
+const $ = id => document.getElementById(id);
+const cards = () => [...document.querySelectorAll(".candidate-card")];
+
+function apiReady(){
+  return API_URL.startsWith("https://script.google.com/macros/s/") && API_URL.endsWith("/exec");
+}
+async function apiGet(params){
+  if(!apiReady()) throw new Error("API_URL belum diisi. Tempel URL deployment /exec dari Google Apps Script.");
+  const url = API_URL + "?" + new URLSearchParams({...params, _: Date.now()}).toString();
+  const controller = new AbortController();
+  const timer = setTimeout(()=>controller.abort(),10000);
+  try{
+    const r = await fetch(url,{method:"GET",cache:"no-store",signal:controller.signal,redirect:"follow"});
+    if(!r.ok) throw new Error("Server merespons HTTP " + r.status);
+    return await r.json();
+  }catch(err){
+    if(err.name==="AbortError") throw new Error("Koneksi ke server timeout.");
+    throw err;
+  }finally{clearTimeout(timer)}
+}
+
+async function loginVoting(){
+  const username = $("loginUsername").value.trim();
+  const password = $("loginPassword").value;
+  const error = $("loginError");
+  const btn = $("loginButton");
+  error.textContent="";
+  if(!username){error.textContent="Masukkan username.";return}
+  if(!password){error.textContent="Masukkan password.";return}
+  btn.disabled=true;btn.textContent="Menghubungkan...";
+  try{
+    const data = await apiGet({action:"login",password});
+    if(!data.success) throw new Error(data.message || "Login gagal.");
+    sessionStorage.setItem(TOKEN_KEY,data.token);
+    sessionStorage.setItem(USER_KEY,username);
+    $("loginScreen").classList.add("hidden");
+    burstBackground(innerWidth/2,innerHeight/2,26);
+  }catch(err){
+    console.error(err);
+    error.textContent = err.message.includes("Failed to fetch")
+      ? "Tidak bisa terhubung ke code.gs. Cek URL /exec dan izin deployment Web App."
+      : err.message;
+  }finally{btn.disabled=false;btn.textContent="Masuk"}
+}
+
+function vote(paslon){
+  if(voteBusy) return;
+  if(!sessionStorage.getItem(TOKEN_KEY)){ $("loginScreen").classList.remove("hidden"); return; }
+  pendingPaslon=paslon;
+  $("confirmTitle").textContent=`Pilih Paslon ${paslon}?`;
+  $("confirmModal").classList.add("show");
+}
+function cancelVote(){pendingPaslon=null;$("confirmModal").classList.remove("show")}
+
+async function confirmVote(){
+  if(!pendingPaslon || voteBusy) return;
+  const paslon=pendingPaslon;
+  voteBusy=true;
+  $("confirmModal").classList.remove("show");
+  const selected=document.querySelector(`.candidate-card[data-paslon="${paslon}"]`);
+  cards().forEach(c=>c===selected?c.classList.add("is-selected"):c.classList.add("is-dimmed"));
+  $("countdownCandidate").textContent=`Paslon ${paslon}`;
+  $("countdownModal").classList.add("show");
+  restart($("countdownProgress"),"run");
+
+  for(const n of [3,2,1]){
+    $("countdownNumber").textContent=n;
+    cardBeat(selected,n);
+    await sleep(800);
+  }
+
+  $("countdownNumber").textContent="✓";
+  cardBeat(selected,"✓",true);
+  await sleep(430);
+  $("countdownModal").classList.remove("show");
+
+  try{
+    const token=sessionStorage.getItem(TOKEN_KEY);
+    const data=await apiGet({action:"vote",paslon:String(paslon),token});
+    if(!data.success){
+      if(data.message==="Unauthorized"){
+        sessionStorage.removeItem(TOKEN_KEY);
+        throw new Error("Sesi login sudah berakhir. Silakan login lagi.");
+      }
+      throw new Error(data.message || "Gagal menyimpan suara.");
+    }
+    $("successText").textContent=`Suara untuk Paslon ${paslon} berhasil disimpan.`;
+    $("successModal").classList.add("show");
+  }catch(err){
+    alert(err.message);
+    if(!sessionStorage.getItem(TOKEN_KEY)) $("loginScreen").classList.remove("hidden");
+  }finally{
+    cards().forEach(c=>c.classList.remove("is-selected","is-dimmed"));
+    pendingPaslon=null;voteBusy=false;
+  }
+}
+function closeSuccess(){$("successModal").classList.remove("show")}
+
+function cardBeat(card,label,finish=false){
+  if(!card)return;
+  const fx=card.querySelector(".card-fx"), number=card.querySelector(".card-count");
+  number.textContent=label;restart(number,"pop");
+  const ring=document.createElement("i");ring.className="ring";fx.appendChild(ring);setTimeout(()=>ring.remove(),800);
+  const scan=document.createElement("i");scan.className="scan";fx.appendChild(scan);setTimeout(()=>scan.remove(),800);
+  const amount=finish?42:26;
+  for(let i=0;i<amount;i++){
+    const p=document.createElement("i");p.className="spark";
+    const a=Math.random()*Math.PI*2,d=(finish?150:105)*(0.35+Math.random()*.75);
+    p.style.setProperty("--x",`${Math.cos(a)*d}px`);
+    p.style.setProperty("--y",`${Math.sin(a)*d}px`);
+    p.style.setProperty("--s",`${.5+Math.random()*1.5}`);
+    p.style.left=`${20+Math.random()*60}%`;p.style.top=`${18+Math.random()*64}%`;
+    fx.appendChild(p);setTimeout(()=>p.remove(),850);
+  }
+  const r=card.getBoundingClientRect();
+  burstBackground(r.left+r.width/2,r.top+r.height/2,finish?32:12);
+}
+function restart(el,cls){el.classList.remove(cls);void el.offsetWidth;el.classList.add(cls)}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Enter" && !$("loginScreen").classList.contains("hidden")) loginVoting();
+  if(e.key==="Escape") cancelVote();
+});
+cards().forEach(c=>{
+  c.addEventListener("keydown",e=>{
+    if(e.key==="Enter"||e.key===" "){e.preventDefault();vote(Number(c.dataset.paslon))}
+  });
+  c.addEventListener("pointermove",e=>{
+    const r=c.getBoundingClientRect();
+    c.style.setProperty("--mx",`${((e.clientX-r.left)/r.width)*100}%`);
+    c.style.setProperty("--my",`${((e.clientY-r.top)/r.height)*100}%`);
+  });
+});
+
+/* background particle engine */
+const canvas=$("particleCanvas"),ctx=canvas.getContext("2d");
+let W,H,dpr,particles=[],bursts=[];
+function resize(){
+  dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;
+  canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+"px";canvas.style.height=H+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  const count=Math.min(85,Math.max(45,Math.floor(W*H/18000)));
+  particles=Array.from({length:count},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.28,vy:(Math.random()-.5)*.28,r:.7+Math.random()*1.7,a:.18+Math.random()*.38}));
+}
+function burstBackground(x,y,n=18){
+  for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=.7+Math.random()*2.6;bursts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,r:1+Math.random()*2.6})}
+}
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  for(const p of particles){
+    p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(79,178,231,${p.a})`;ctx.fill();
+  }
+  for(let i=0;i<particles.length;i++)for(let j=i+1;j<particles.length;j++){
+    const a=particles[i],b=particles[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.hypot(dx,dy);
+    if(d<115){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(91,184,232,${(1-d/115)*.08})`;ctx.stroke()}
+  }
+  bursts=bursts.filter(b=>b.life>0);
+  for(const b of bursts){
+    b.x+=b.vx;b.y+=b.vy;b.vx*=.985;b.vy*=.985;b.life-=.025;
+    ctx.beginPath();ctx.arc(b.x,b.y,b.r,0,Math.PI*2);ctx.fillStyle=`rgba(91,196,247,${Math.max(0,b.life)*.7})`;ctx.fill();
+  }
+  requestAnimationFrame(draw);
+}
+addEventListener("resize",resize);resize();draw();
+
+/* Kalau token masih ada pada tab yang sama, login screen dilewati. */
+if(sessionStorage.getItem(TOKEN_KEY)) $("loginScreen").classList.add("hidden");
+</script>
 </body>
 </html>
