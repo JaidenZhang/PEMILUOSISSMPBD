@@ -68,14 +68,17 @@ body{
 .candidate-card:hover{transform:translateY(-7px);border-color:rgba(67,161,218,.45);box-shadow:0 24px 58px rgba(46,110,151,.16),0 0 32px rgba(91,193,248,.10)}
 .candidate-card.is-dimmed{filter:saturate(.78) brightness(.97);transform:scale(.985);opacity:.72}
 .candidate-card.is-selected{
-  z-index:20;transform:translateY(-9px) scale(1.018);
-  border-color:rgba(57,169,230,.85);
-  box-shadow:0 28px 75px rgba(35,127,180,.22),0 0 0 2px rgba(114,211,255,.16),0 0 48px rgba(91,197,255,.25);
-  animation:selectedBreath .8s ease-in-out infinite alternate;
+  z-index:20;transform:translateY(-7px) scale(1.012);
+  border-color:rgba(57,169,230,.78);
+  box-shadow:0 24px 65px rgba(35,127,180,.20),0 0 0 2px rgba(114,211,255,.14),0 0 38px rgba(91,197,255,.18);
+  animation:selectedBreath 1.15s ease-in-out infinite alternate;
 }
 .candidate-card.is-selected::before{opacity:1;animation:spinGlow 2.2s linear infinite}
 @keyframes spinGlow{to{transform:rotate(360deg)}}
-@keyframes selectedBreath{to{box-shadow:0 30px 82px rgba(35,127,180,.26),0 0 0 3px rgba(114,211,255,.19),0 0 65px rgba(91,197,255,.32)}}
+@keyframes selectedBreath{
+  from{transform:translateY(-7px) scale(1.012)}
+  to{transform:translateY(-9px) scale(1.017);box-shadow:0 28px 72px rgba(35,127,180,.24),0 0 0 3px rgba(114,211,255,.17),0 0 50px rgba(91,197,255,.24)}
+}
 .card-fx{position:absolute;inset:0;z-index:30;pointer-events:none;overflow:hidden;border-radius:inherit}
 .spark{
   position:absolute;left:50%;top:50%;width:7px;height:7px;border-radius:50%;
@@ -89,16 +92,27 @@ body{
 @keyframes scan{to{top:115%;opacity:0}}
 .card-count{
   position:absolute;inset:0;z-index:31;display:grid;place-items:center;pointer-events:none;
-  font-size:clamp(75px,8vw,120px);font-weight:950;color:white;
-  text-shadow:0 0 10px #62c8ff,0 0 35px #43b6f2,0 10px 35px rgba(27,108,154,.35);
-  opacity:0;transform:scale(.5);
+  font-size:clamp(70px,7vw,110px);font-weight:950;color:white;
+  text-shadow:0 0 8px #8bdcff,0 0 25px #55bff4,0 8px 28px rgba(27,108,154,.30);
+  opacity:0;transform:scale(.65);
 }
-.card-count.pop{animation:cardCount .72s cubic-bezier(.18,.85,.22,1) forwards}
-@keyframes cardCount{0%{opacity:0;transform:scale(.45) rotate(-5deg)}35%{opacity:1;transform:scale(1.16) rotate(2deg)}70%{opacity:1;transform:scale(.98)}100%{opacity:0;transform:scale(1.08)}}
+.card-count.pop{animation:cardCount .72s cubic-bezier(.16,.85,.25,1) forwards}
+@keyframes cardCount{0%{opacity:0;transform:scale(.6) translateY(8px)}28%{opacity:1;transform:scale(1.12) translateY(-2px)}58%{opacity:1;transform:scale(1) translateY(0)}100%{opacity:0;transform:scale(1.06) translateY(-5px)}}
 
-.photo-wrap{position:relative;overflow:hidden;flex:0 0 auto}
-.candidate-photo{display:block;width:100%;height:clamp(135px,25dvh,215px);object-fit:cover;object-position:center;filter:saturate(.96) contrast(.99) brightness(1.02);transition:.5s}
-.candidate-card:hover .candidate-photo,.candidate-card.is-selected .candidate-photo{transform:scale(1.04);filter:saturate(1.04) brightness(1.04)}
+.photo-wrap{
+  position:relative;overflow:hidden;flex:0 0 auto;
+  height:clamp(155px,27dvh,230px);
+  background:radial-gradient(circle at 50% 20%,rgba(121,205,250,.16),transparent 60%),linear-gradient(180deg,#f5fbff,#eaf7ff);
+  display:flex;align-items:flex-start;justify-content:center;
+}
+.candidate-photo{
+  display:block;width:100%;height:100%;object-fit:contain;object-position:center top;
+  transform:translateY(-5px) scale(.98);
+  filter:saturate(.96) contrast(.99) brightness(1.02);
+  transition:transform .55s cubic-bezier(.2,.8,.2,1),filter .45s ease;
+}
+.candidate-card:hover .candidate-photo{transform:translateY(-8px) scale(1.015);filter:saturate(1.02) brightness(1.035)}
+.candidate-card.is-selected .candidate-photo{transform:translateY(-10px) scale(1.025);filter:saturate(1.03) brightness(1.04)}
 .photo-wrap::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.28) 45%,transparent 62%);transform:translateX(-130%);transition:.7s}
 .candidate-card:hover .photo-wrap::after,.candidate-card.is-selected .photo-wrap::after{transform:translateX(130%)}
 .candidate-number{position:absolute;z-index:15;left:12px;top:12px;width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:rgba(255,255,255,.9);border:1px solid white;color:#337ca7;font-size:12px;font-weight:900;box-shadow:0 7px 20px rgba(27,72,101,.13);backdrop-filter:blur(12px)}
@@ -136,12 +150,12 @@ body{
 .track{height:5px;margin-top:14px;border-radius:99px;overflow:hidden;background:#e4f2f9}.progress{height:100%;width:0;background:linear-gradient(90deg,#7ad4ff,#338dbb)}
 .progress.run{animation:progress 2.4s linear forwards}@keyframes progress{to{width:100%}}
 .hidden{display:none!important}
-@media(max-height:800px){.header{height:62px}.container{height:calc(100dvh - 62px)}.candidate-photo{height:clamp(115px,21dvh,170px)}.hero{margin-bottom:10px}.hero h2{font-size:30px}.candidate-content{padding:11px}.vision{font-size:9.5px}}
+@media(max-height:800px){.header{height:62px}.container{height:calc(100dvh - 62px)}.photo-wrap{height:clamp(130px,23dvh,185px)}.hero{margin-bottom:10px}.hero h2{font-size:30px}.candidate-content{padding:11px}.vision{font-size:9.5px}}
 @media(max-width:760px){
   body{overflow:hidden}.header,.container{width:calc(100% - 22px)}
   .brand p{display:none}.result-btn{padding:9px 11px}
   .candidate-grid{grid-template-columns:repeat(4,minmax(190px,1fr));scroll-snap-type:x mandatory}
-  .candidate-card{scroll-snap-align:start}.candidate-photo{height:170px}
+  .candidate-card{scroll-snap-align:start}.photo-wrap{height:180px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
